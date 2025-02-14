@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Blog</title>
+</head>
+<body>
+    <h1>Blog Posts</h1>
+    <div th:each="blog : ${blogs}">
+        <h2 th:text="${blog.title}"></h2>
+        <p th:text="${blog.content}"></p>
+        <small>Posted by <span th:text="${blog.user.username}"></span> on <span th:text="${blog.createdAt}"></span></small>
+        <hr>
+    </div>
+    <a th:href="@{/blog/create}" sec:authorize="isAuthenticated()">Create New Post</a>
+</body>
+</html>
