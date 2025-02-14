@@ -18,8 +18,8 @@ import java.util.Collections;
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
-    private final UserService userService;
-    private final RoleRepository roleRepository;
+    private UserService userService;
+    private RoleRepository roleRepository;
 
     @GetMapping("/login")
     public String loginPage(HttpServletRequest request) {

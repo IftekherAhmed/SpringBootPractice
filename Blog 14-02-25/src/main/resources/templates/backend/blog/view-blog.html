@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>View Blog</title>
+</head>
+<body>
+    <h1 th:text="${blog.title}"></h1>
+    <p th:text="${blog.content}"></p>
+    <small>Posted by <span th:text="${blog.user.username}"></span> on <span th:text="${blog.createdAt}"></span></small>
+    <br>
+    <a th:href="@{/backend/blog/edit/{id}(id=${blog.id})}">Edit</a>
+    <a th:href="@{/backend/blog/delete/{id}(id=${blog.id})}">Delete</a>
+    <a th:href="@{/backend/blog}">Back to Blog List</a>
+</body>
+</html>
