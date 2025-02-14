@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout.html}">
+<head>
+    <title>View User</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <section layout:fragment="content">
+        <h1 class="mb-4">View User</h1>
+        <p><strong>ID:</strong> <span th:text="${user.id}">1</span></p>
+        <p><strong>Name:</strong> <span th:text="${user.name}">John Doe</span></p>
+        <p><strong>Email:</strong> <span th:text="${user.email}">john.doe@example.com</span></p>
+        <p><strong>Phone:</strong> <span th:text="${user.phone}">1234567890</span></p>
+        <p><strong>Address:</strong> <span th:text="${user.address}">123 Main St</span></p>
+        <a href="/users" class="btn btn-primary mt-3">Back to List</a>
+    </section>
+</body>
+</html>

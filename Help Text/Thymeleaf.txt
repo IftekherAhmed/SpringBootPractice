@@ -1,0 +1,193 @@
+Thymeleaf is a Java-based templating engine used for server-side rendering (SSR) in web applications. It's often used with Spring Boot to render HTML templates dynamically based on data from the backend. It’s designed to process HTML, XML, JavaScript, CSS, and even plain text.
+
+
+Thymeleaf Core Features:
+---------------------------------
+# Natural Templating: Thymeleaf templates are just normal HTML files with added tags. They can still be opened in a browser without processing, allowing you to see the unprocessed HTML.
+# Expression Language (EL): Thymeleaf supports expression language to evaluate variables, access properties, and call methods within templates.
+# Form Handling: You can easily bind forms to Java objects and use Thymeleaf to handle form submissions.
+# Iteration and Conditional Statements: Thymeleaf allows you to loop through collections and apply conditional logic in your templates.
+# Fragment Inclusion: It supports fragments, which are reusable components like header, footer, sidebar, etc.
+
+
+
+Thymeleaf Syntax Overview
+---------------------------------
+#Variables and Expressions: Use ${} for variable expressions to evaluate variables.
+Example: Display a message passed from the controller.
+
+<p>Hello, ${user.name}!</p>
+
+===========================================
+
+# Conditional Statements: Use th:if and th:unless for conditional logic.
+Example: Display a message only if the user.name is present.
+
+<p th:if="${user.name}">Hello, ${user.name}!</p>
+<p th:unless="${user.name}">Hello, Guest!</p>
+
+===========================================
+
+# Iteration: Use th:each to iterate over collections (like lists or sets).
+Example: Loop through a list of posts.
+
+<ul>
+    <li th:each="post : ${posts}">
+        <p th:text="${post.title}"></p>
+    </li>
+</ul>
+
+===========================================
+
+# Fragments: Reusable HTML components (like headers, footers, etc.).
+Example: Defining a reusable fragment.
+
+<!-- fragment.html -->
+<div th:fragment="header">
+    <h1>Welcome to My Site</h1>
+</div>
+
+
+
+* Using the fragment in another file:
+
+<div th:replace="~{fragment :: header}"></div>
+
+===========================================
+
+# Form Handling: Bind form fields to Java objects and automatically bind data to the server.
+Example: Create a form to submit a new post.
+
+<form action="#" th:action="@{/posts}" th:object="${post}" method="post">
+    <label for="title">Title</label>
+    <input type="text" id="title" th:field="*{title}">
+    <label for="content">Content</label>
+    <textarea id="content" th:field="*{content}"></textarea>
+    <button type="submit">Submit</button>
+</form>
+
+===========================================
+
+# Layout and Templating (Layout Dialect): layout.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">My Website</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Website</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- This will be replaced with the content of each page -->
+        <div th:replace="${body}"></div>
+    </main>
+
+    <footer>
+        <p>Footer content</p>
+    </footer>
+</body>
+</html>
+
+
+* Define a Content Template (e.g., home.html):
+<!-- home.html -->
+<html xmlns:th="http://www.thymeleaf.org">
+    <body th:replace="layout :: body">
+        <div th:text="'Welcome, ' + ${user.name}"></div>
+    </body>
+</html>
+
+===========================================
+
+Thymeleaf with Spring Boot Example
+Controller Example:
+Let's set up a basic PostController to show posts using Thymeleaf.
+
+@Controller
+@RequestMapping("/posts")
+public class PostController {
+
+    private final PostService postService;
+
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
+
+    @GetMapping
+    public String listPosts(Model model) {
+        List<Post> posts = postService.findAll();
+        model.addAttribute("posts", posts);
+        return "post/list";  // Rendering post/list.html
+    }
+
+    @GetMapping("/{id}")
+    public String showPost(@PathVariable Long id, Model model) {
+        Post post = postService.findById(id).orElseThrow();
+        model.addAttribute("post", post);
+        return "post/show";  // Rendering post/show.html
+    }
+}
+
+
+* Post List View (post/list.html):
+<!-- post/list.html -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Posts List</title>
+</head>
+<body>
+    <h1>All Posts</h1>
+    <ul>
+        <li th:each="post : ${posts}">
+            <a th:href="@{/posts/{id}(id=${post.id})}" th:text="${post.title}"></a>
+        </li>
+    </ul>
+</body>
+</html>
+
+
+* Post Detail View (post/show.html):
+<!-- post/show.html -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Post Details</title>
+</head>
+<body>
+    <h1 th:text="${post.title}"></h1>
+    <p th:text="${post.content}"></p>
+</body>
+</html>
+
+===========================================
+
+Thymeleaf Expression Examples
+Form Binding:
+
+Use th:field to bind form fields to Java model attributes.
+
+<form th:action="@{/posts}" th:object="${post}" method="post">
+    <label for="title">Title</label>
+    <input type="text" id="title" th:field="*{title}" />
+    <button type="submit">Submit</button>
+</form>
+
+===========================================
+
+Dynamic Link Generation:
+Use @{} for URL expressions.
+
+<a th:href="@{/posts/{id}(id=${post.id})}">View Post</a>
+
+

@@ -1,0 +1,180 @@
+===========================================
+****** One-to-One ******
+===========================================
+
+=> In a One-to-One relationship, one entity is related to one other entity.
+Example: A User has one Profile.
+Example: User and Profile
+
+Entities:
+package com.example.crud.entity;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Entity
+@Data
+@NoArgsConstructor
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String username;
+
+    @OneToOne(mappedBy = "user")
+    private Profile profile;  // One-to-One relationship with Profile
+}
+
+@Entity
+@Data
+@NoArgsConstructor
+public class Profile {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String bio;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")  // Foreign key
+    private User user;  // One-to-One relationship with User
+}
+
+Explanation:
+User has a Profile, and Profile has a User.
+In User, we define the relationship using @OneToOne(mappedBy = "user") to show that Profile owns the relationship.
+In Profile, we use @JoinColumn(name = "user_id") to specify the foreign key.
+
+
+
+===========================================
+****** One-to-Many ******
+===========================================
+
+=> In a One-to-Many relationship, one entity is related to many other entities.
+Example: A Post has many Comments.
+Example: Post and Comments
+
+Entities:
+package com.example.crud.entity;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Data
+@NoArgsConstructor
+public class Post {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments;  // One-to-Many relationship with Comment
+}
+
+@Entity
+@Data
+@NoArgsConstructor
+public class Comment {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id")  // Foreign key to Post
+    private Post post;  // Many-to-One relationship with Post
+}
+
+Explanation:
+Post has many Comments: @OneToMany(mappedBy = "post") specifies that Post is the parent and owns the relationship.
+Comment belongs to one Post: @ManyToOne with @JoinColumn(name = "post_id") specifies the foreign key in the Comment table.
+
+
+
+===========================================
+****** Many-to-One ******
+===========================================
+
+=> In a Many-to-One relationship, many entities are related to one entity.
+This is the reverse side of a One-to-Many relationship. For example, many comments belong to one post.
+Example: Comment and Post (Reverse of One-to-Many)
+Entities:
+The code is already covered in the One-to-Many relationship:
+
+Many Comments belong to One Post (@ManyToOne in Comment).
+This relationship is just the inverse of One-to-Many, so it’s not defined separately.
+
+
+
+===========================================
+****** Many-to-Many ******
+===========================================
+
+=> In a Many-to-Many relationship, many entities are related to many other entities.
+Example: A Student can be enrolled in many Courses, and a Course can have many Students.
+Example: Student and Course
+
+package com.example.crud.entity;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Data
+@NoArgsConstructor
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @ManyToMany
+    @JoinTable(
+        name = "student_course",  // The join table name
+        joinColumns = @JoinColumn(name = "student_id"),  // Foreign key in the join table
+        inverseJoinColumns = @JoinColumn(name = "course_id")  // Foreign key in the join table
+    )
+    private Set<Course> courses = new HashSet<>();  // Many-to-Many relationship with Course
+}
+
+@Entity
+@Data
+@NoArgsConstructor
+public class Course {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+
+    @ManyToMany(mappedBy = "courses")
+    private Set<Student> students = new HashSet<>();  // Many-to-Many relationship with Student
+}
+
+
+Explanation:
+Student can enroll in many Courses: The @ManyToMany annotation defines the relationship.
+The @JoinTable defines the join table (student_course) that holds the foreign keys (student_id and course_id) for both entities.
+Course can have many Students: The mappedBy = "courses" indicates that Student owns the relationship.

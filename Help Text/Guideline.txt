@@ -1,0 +1,380 @@
+===========================================
+****** Entity ******
+===========================================
+
+=> Post Entity (Post.java) - Like Laravel’s Model
+In Laravel, you create models (e.g., Post model) which interact with your database table. In Spring Boot, we use the JPA entity to represent a table.
+
+# Post.java (Entity)
+--------------------------
+package com.example.crud.entity;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "post")
+@Data
+@NoArgsConstructor
+public class Post {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+    private String content;
+}
+
+
+Explanation:
+@Entity: Marks this class as a JPA entity (similar to Laravel’s Eloquent models).
+@Id: This is the primary key for the table (like $fillable in Laravel).
+@GeneratedValue(strategy = GenerationType.IDENTITY): Auto-increments the ID (like incrementing in Laravel).
+The fields title and content are mapped to the columns in the post table.
+Lombok @Data generates getter/setter methods for the fields automatically, similar to how Laravel uses $fillable.
+
+
+
+
+===========================================
+****** Repository ******
+===========================================
+
+=> Post Repository (PostRepository.java) - Like Laravel’s Eloquent Query Builder
+In Laravel, you interact with the database through Eloquent. Spring Boot does this via JPA Repositories.
+
+
+# PostRepository.java
+--------------------------
+package com.example.crud.repository;
+
+import com.example.crud.entity.Post;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PostRepository extends JpaRepository<Post, Long> {
+    // JpaRepository already provides methods like save(), findAll(), findById(), delete()
+}
+
+Explanation:
+JpaRepository<Post, Long>: This is similar to Laravel’s Post::all() or Post::find(). It provides basic CRUD operations without needing to write any custom queries.
+It has built-in methods like save(), findById(), findAll(), and deleteById() (just like Laravel’s create(), find(), all(), delete()).
+
+
+
+
+===========================================
+****** Service ******
+===========================================
+
+=> Post Service (PostService.java) - Like Laravel’s Service Layer or Controllers
+In Laravel, you usually handle business logic directly in the controllers, but it's a good practice to use a service layer to keep controllers clean. In Spring Boot, Services handle the business logic and interact with the repository to fetch/save data.
+
+
+# PostService.java
+--------------------------
+package com.example.crud.service;
+
+import com.example.crud.entity.Post;
+import com.example.crud.repository.PostRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class PostService {
+
+    private final PostRepository postRepository;
+
+    // Get all posts
+    public List<Post> findAll() {
+        return postRepository.findAll();
+    }
+
+    // Get a post by ID
+    public Optional<Post> findById(Long id) {
+        return postRepository.findById(id);
+    }
+
+    // Save a post (Create or Update)
+    public Post save(Post post) {
+        return postRepository.save(post);
+    }
+
+    // Delete a post by ID
+    public void delete(Long id) {
+        postRepository.deleteById(id);
+    }
+}
+
+Explanation:
+Service Layer: The service layer is used to encapsulate the business logic. It uses the PostRepository to interact with the database (similar to what you might put inside Laravel’s controllers).
+Methods like findAll(), save(), and delete() are abstracted here instead of directly using them in the controller, which keeps the controller code cleaner.
+Optional<Post> is used because, in Spring, fetching data might result in an empty result. This is similar to Laravel’s findOrFail() but here we use Optional for handling absence of data.
+
+
+
+
+===========================================
+****** Controller ******
+===========================================
+
+=> Post Controller (PostController.java) - Like Laravel’s Controller
+In Laravel, you define routes and actions (methods) inside controllers to handle HTTP requests. In Spring Boot, you use a controller class to handle these requests.
+
+
+
+# PostController.java
+--------------------------
+package com.example.crud.controller;
+
+import com.example.crud.entity.Post;
+import com.example.crud.service.PostService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequestMapping("/posts")
+@RequiredArgsConstructor
+public class PostController {
+
+    private final PostService postService;
+
+    // Show all posts
+    @GetMapping
+    public String index(Model model) {
+        model.addAttribute("posts", postService.findAll());
+        return "post/index"; // Thymeleaf template for showing posts
+    }
+
+    // Show form to create a new post
+    @GetMapping("/create")
+    public String create(Model model) {
+        model.addAttribute("post", new Post());
+        return "post/create"; // Thymeleaf template for creating a post
+    }
+
+    // Save a new post
+    @PostMapping("/store")
+    public String store(@ModelAttribute Post post) {
+        postService.save(post);
+        return "redirect:/posts"; // Redirect to the list of posts
+    }
+
+    // Show form to edit an existing post
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Long id, Model model) {
+        model.addAttribute("post", postService.findById(id).orElseThrow());
+        return "post/edit"; // Thymeleaf template for editing a post
+    }
+
+    // Update an existing post
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable Long id, @ModelAttribute Post post) {
+        post.setId(id);  // Ensure the correct ID is set
+        postService.save(post);
+        return "redirect:/posts"; // Redirect to the list of posts
+    }
+
+    // Delete a post
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        postService.delete(id);
+        return "redirect:/posts"; // Redirect to the list of posts
+    }
+}
+
+Explanation:
+Controller Layer: This is where you handle HTTP requests, similar to Laravel's controllers.
+@GetMapping is used for GET requests (like Laravel’s Route::get()).
+@PostMapping is used for POST requests (like Laravel’s Route::post()).
+The @ModelAttribute binds form data to the Post object (like Laravel’s $request->input()).
+The @PathVariable extracts variables from the URL (like Laravel’s route parameters).
+redirect:/posts: After an action like saving or deleting a post, we redirect the user to the list of posts, similar to Laravel’s return redirect()->route('posts.index').
+
+
+
+
+
+===========================================
+****** View ******
+===========================================
+
+=> Views (Thymeleaf Templates) - Like Laravel’s Blade Views
+In Laravel, you use Blade templates to render HTML views. In Spring Boot, you can use Thymeleaf to render views.
+
+
+# index.html (View for displaying all posts)
+--------------------------
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Posts</title>
+</head>
+<body>
+<h2>All Posts</h2>
+<a href="/posts/create">Create New Post</a>
+<ul>
+    <li th:each="post : ${posts}">
+        <span th:text="${post.title}"></span> - 
+        <a th:href="@{/posts/edit/{id}(id=${post.id})}">Edit</a> | 
+        <a th:href="@{/posts/delete/{id}(id=${post.id})}">Delete</a>
+    </li>
+</ul>
+</body>
+</html>
+
+Explanation:
+th:each: Loops over the posts list and displays each post’s title.
+th:text: Dynamically sets the text value (like Blade’s {{ post.title }}).
+th:href: Creates a link with the correct URL for editing and deleting posts.
+
+
+
+
+
+===========================================
+****** Migration ******
+===========================================
+
+=> Liquibase Migration (Database Schema) - Similar to Laravel Migrations
+In Laravel, you use migrations to create and modify database tables. In Spring Boot, we use Liquibase for managing database changes.
+
+
+# db.changelog-master.xml
+--------------------------
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="admin">
+        <createTable tableName="post">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)" />
+            <column name="content" type="TEXT" />
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
+
+Explanation:
+This defines a database changeSet that creates the post table with id, title, and content columns, just like running Laravel migrations.
+
+
+
+
+
+===========================================
+****** DTO (Data Transfer Object) ******
+===========================================
+
+=> PostDTO (Data Transfer Object) - Like Laravel’s Form Request or Resource Classes
+In Laravel, Form Requests or Resource Classes are often used to structure the data you send between the controller and the client. The DTO serves a similar purpose in Spring Boot. It's an object that holds data and is often used to transfer data between layers (such as between the Controller and Service or Service and API response).
+
+In simple terms, a DTO is used to transfer data in a controlled and often simplified manner between systems, and to separate data representation from business logic.
+
+# PostDTO.java (DTO)
+--------------------------
+package com.example.crud.dto;
+
+import lombok.Data;
+
+@Data
+public class PostDTO {
+
+    private String title;
+    private String content;
+
+    // Constructor, Getters and Setters will be generated by Lombok @Data
+}
+
+Explanation:
+@Data: This annotation from Lombok automatically generates getter/setter methods, toString(), equals(), and hashCode() methods for the class, similar to how Laravel's FormRequest or Resource classes work.
+
+Purpose of PostDTO:
+
+Simplified Data: This DTO doesn't include all fields from the Post entity (like id or any other internal fields), which is useful when you want to expose only certain fields to the user, for example, in an API response.
+Data Transfer: It is used to transfer only the necessary data (in this case, title and content) without exposing the underlying JPA entity directly to the client, which helps with decoupling the database model from the API response.
+Validation and Transformation: You can add logic to the DTO for data validation or transformation before it reaches the controller or service layer.
+
+
+
+DTO in Action (Using it in a Controller):
+Let’s look at how the PostDTO can be used in a Controller to handle data:
+
+Example of PostController using PostDTO:
+package com.example.crud.controller;
+
+import com.example.crud.dto.PostDTO;
+import com.example.crud.entity.Post;
+import com.example.crud.service.PostService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequestMapping("/posts")
+@RequiredArgsConstructor
+public class PostController {
+
+    private final PostService postService;
+
+    // Using DTO for the response data
+    @GetMapping
+    public String index(Model model) {
+        // Fetching all posts from the service
+        model.addAttribute("posts", postService.findAll());
+        return "post/index";
+    }
+
+    @GetMapping("/create")
+    public String create(Model model) {
+        // Empty DTO to bind the form
+        model.addAttribute("post", new PostDTO());
+        return "post/create";
+    }
+
+    @PostMapping("/store")
+    public String store(@ModelAttribute PostDTO postDTO) {
+        // Converting PostDTO to Post entity
+        Post post = new Post();
+        post.setTitle(postDTO.getTitle());
+        post.setContent(postDTO.getContent());
+        postService.save(post); // Saving the post entity
+        return "redirect:/posts";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable Long id, Model model) {
+        // Fetch the post and convert it to DTO for editing
+        Post post = postService.findById(id).orElseThrow();
+        PostDTO postDTO = new PostDTO();
+        postDTO.setTitle(post.getTitle());
+        postDTO.setContent(post.getContent());
+        model.addAttribute("post", postDTO);
+        return "post/edit";
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable Long id, @ModelAttribute PostDTO postDTO) {
+        // Updating a post based on DTO data
+        Post post = postService.findById(id).orElseThrow();
+        post.setTitle(postDTO.getTitle());
+        post.setContent(postDTO.getContent());
+        postService.save(post); // Saving the updated post
+        return "redirect:/posts";
+    }
+}
