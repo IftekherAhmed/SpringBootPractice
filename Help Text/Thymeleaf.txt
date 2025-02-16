@@ -55,6 +55,16 @@ Example: Create a form to submit a new post.
     <button type="submit">Submit</button>
 </form>
 
+# th:action: Dynamically sets the action attribute of a form.
+<form th:action="@{/save}" method="post">
+    <button type="submit">Save</button>
+</form>
+
+# th:method: Dynamically sets the method attribute of a form.
+<form th:method="post">
+    <button type="submit">Submit</button>
+</form>
+
 ===========================================
 
 # Layout and Templating (Layout Dialect): layout.html
@@ -221,6 +231,11 @@ Thymeleaf Expression Examples:
 # th:action: Dynamically sets the action attribute of a form.
 <form th:action="@{/save}" method="post">
     <button type="submit">Save</button>
+</form>
+
+# th:method: Dynamically sets the method attribute of a form.
+<form th:method="post">
+    <button type="submit">Submit</button>
 </form>
 
 # th:inline: Enables inline expressions in text, JavaScript, or CSS.

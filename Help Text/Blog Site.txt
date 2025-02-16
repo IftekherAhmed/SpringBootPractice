@@ -96,6 +96,9 @@ import com.example.security.entity.Blog;
 import com.example.security.entity.User;
 import com.example.security.repository.BlogRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -115,6 +118,11 @@ public class BlogService {
         blog.setCreatedAt(LocalDateTime.now());
         return blogRepository.save(blog);
     }
+
+    public Page<Blog> getAllBlogs(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return blogRepository.findAll(pageable);
+    }
 }
 ```
 
@@ -128,6 +136,7 @@ import com.example.security.entity.Blog;
 import com.example.security.entity.User;
 import com.example.security.service.BlogService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -139,8 +148,11 @@ public class BlogController {
     private final BlogService blogService;
 
     @GetMapping("/blog")
-    public String blogPage(Model model) {
-        model.addAttribute("blogs", blogService.getAllBlogs());
+    public String blogPage(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model) {
+        Page<Blog> blogPage = blogService.getAllBlogs(page, size);
+        model.addAttribute("blogs", blogPage.getContent());
+        model.addAttribute("totalPages", blogPage.getTotalPages());
+        model.addAttribute("currentPage", page);
         return "blog";
     }
 
@@ -216,6 +228,14 @@ public class SecurityConfig {
         <p th:text="${blog.content}"></p>
         <small>Posted by <span th:text="${blog.user.username}"></span> on <span th:text="${blog.createdAt}"></span></small>
         <hr>
+    </div>
+    <div>
+        <span th:if="${currentPage > 0}">
+            <a th:href="@{/blog(page=${currentPage - 1}, size=${size})}">Previous</a>
+        </span>
+        <span th:if="${currentPage < totalPages - 1}">
+            <a th:href="@{/blog(page=${currentPage + 1}, size=${size})}">Next</a>
+        </span>
     </div>
     <a th:href="@{/blog/create}" sec:authorize="isAuthenticated()">Create New Post</a>
 </body>
@@ -295,5 +315,7 @@ spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
 - Only authenticated users can create new blog posts (`/blog/create`).
 - The `Blog` entity is linked to the `User` entity to track who created the post.
 - Thymeleaf templates are used for the frontend, with `sec:authorize` for conditional rendering based on authentication.
+- Pagination is implemented for the blog posts to handle large numbers of posts.
 
 This setup maintains your existing authentication and authorization structure while adding a simple blog feature.
+```

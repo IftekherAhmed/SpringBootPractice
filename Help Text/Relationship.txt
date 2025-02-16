@@ -178,3 +178,28 @@ Explanation:
 Student can enroll in many Courses: The @ManyToMany annotation defines the relationship.
 The @JoinTable defines the join table (student_course) that holds the foreign keys (student_id and course_id) for both entities.
 Course can have many Students: The mappedBy = "courses" indicates that Student owns the relationship.
+
+===========================================
+
+Cascading Operations
+------------------------------
+Cascading allows you to propagate operations (like persist, merge, remove) from a parent entity to its related entities.
+
+Example: CascadeType.ALL in One-to-Many relationship
+@Entity
+@Data
+@NoArgsConstructor
+public class Post {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+}
+
+Explanation:
+CascadeType.ALL: All operations (persist, merge, remove, etc.) will be cascaded from Post to its Comments.
+Other Cascade Types: CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH

@@ -378,3 +378,120 @@ public class PostController {
         return "redirect:/posts";
     }
 }
+
+===========================================
+
+****** Exception Handling ******
+===========================================
+
+=> Global Exception Handling - Like Laravel's Exception Handler
+In Laravel, you handle exceptions in the `Handler` class. In Spring Boot, you can use `@ControllerAdvice` to handle exceptions globally.
+
+# GlobalExceptionHandler.java
+--------------------------
+package com.example.crud.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleResourceNotFoundException(ResourceNotFoundException ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error/404"; // Thymeleaf template for 404 error
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleException(Exception ex, Model model) {
+        model.addAttribute("errorMessage", "An unexpected error occurred");
+        return "error/500"; // Thymeleaf template for 500 error
+    }
+}
+
+Explanation:
+@ControllerAdvice: This annotation allows you to handle exceptions globally.
+@ExceptionHandler: This annotation is used to define the method that handles specific exceptions.
+@ResponseStatus: This annotation sets the HTTP status code for the response.
+
+===========================================
+
+****** Validation ******
+===========================================
+
+=> Validation - Like Laravel's Form Request Validation
+In Laravel, you validate form data using Form Requests. In Spring Boot, you can use `@Valid` and `@Validated` annotations for validation.
+
+# User.java (Entity with Validation)
+--------------------------
+package com.example.crud.entity;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
+@Entity
+@Data
+@NoArgsConstructor
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message = "Username is mandatory")
+    private String username;
+
+    @Email(message = "Email should be valid")
+    private String email;
+}
+
+# UserController.java (Controller with Validation)
+--------------------------
+package com.example.crud.controller;
+
+import com.example.crud.entity.User;
+import com.example.crud.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
+@Controller
+@RequestMapping("/users")
+@RequiredArgsConstructor
+public class UserController {
+
+    private final UserService userService;
+
+    @GetMapping("/create")
+    public String create(Model model) {
+        model.addAttribute("user", new User());
+        return "user/create";
+    }
+
+    @PostMapping("/store")
+    public String store(@Valid @ModelAttribute User user, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "user/create";
+        }
+        userService.save(user);
+        return "redirect:/users";
+    }
+}
+
+Explanation:
+@Valid: This annotation is used to mark an object for validation.
+BindingResult: This object holds the result of the validation and binding and contains errors that may have occurred.

@@ -282,7 +282,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/dashboard").authenticated()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().permitAll()
             )
             .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/dashboard", true))
@@ -444,3 +445,60 @@ dashboard.html (Protected Page)
     <a href="/logout">Logout</a>
 </body>
 </html>
+
+
+================================
+
+Password Encoding
+------------------------------
+Spring Security provides various password encoders to securely store passwords.
+
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+}
+
+# Usage in UserService:
+@Service
+@RequiredArgsConstructor
+public class UserService {
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+}
+
+================================
+
+Role-Based Access Control
+------------------------------
+You can restrict access to certain parts of your application based on user roles.
+
+# Security Configuration:
+@Configuration
+@RequiredArgsConstructor
+public class SecurityConfig {
+    private final UserDetailsServiceImpl userDetailsService;
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .anyRequest().permitAll()
+            )
+            .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/dashboard", true))
+            .logout(logout -> logout.logoutSuccessUrl("/"));
+
+        return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
