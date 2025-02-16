@@ -19,7 +19,7 @@ public class SecurityConfig {
         http
             .userDetailsService(userDetailsService)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/backend").authenticated()
+                .requestMatchers("/backend/**").authenticated()
                 .anyRequest().permitAll()
             )
             .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/backend/dashboard", true))
