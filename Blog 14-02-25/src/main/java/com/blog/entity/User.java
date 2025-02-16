@@ -18,6 +18,9 @@ public class User {
     private String username;
     private String password;
 
+    @Transient
+    private String rePassword;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_roles",

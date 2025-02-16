@@ -1,6 +1,7 @@
 package com.blog.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,14 +19,17 @@ import java.util.Collections;
 @Controller
 @RequiredArgsConstructor
 public class AuthController {
+    @Autowired
     private UserService userService;
+
+    @Autowired
     private RoleRepository roleRepository;
 
     @GetMapping("/login")
     public String loginPage(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
-            return "redirect:/dashboard";
+            return "redirect:/backend/dashboard";
         }
         return "frontend/login";
     }
@@ -37,7 +41,11 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String registerUser(@ModelAttribute User user) {
+    public String registerUser(@ModelAttribute User user, Model model) {
+        if (!user.getPassword().equals(user.getRePassword())) {
+            model.addAttribute("error", "Passwords do not match");
+            return "frontend/register";
+        }
         Role userRole = roleRepository.findByName("USER");
         if (userRole == null) {
             userRole = new Role(null, "USER");

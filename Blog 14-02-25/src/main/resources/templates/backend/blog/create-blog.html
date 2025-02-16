@@ -8,7 +8,7 @@
 <body>
     <section layout:fragment="content" class="container mt-5">
         <h1>Create a New Blog Post</h1>
-        <form th:action="@{/blog/create}" th:object="${blog}" method="post">
+        <form th:action="@{/backend/blog/create}" th:object="${blog}" method="post">
             <div class="form-group">
                 <label>Title:</label>
                 <input type="text" class="form-control" th:field="*{title}" required/>

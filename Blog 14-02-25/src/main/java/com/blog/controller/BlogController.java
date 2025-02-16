@@ -3,6 +3,7 @@ package com.blog.controller;
 import com.blog.entity.Blog;
 import com.blog.entity.User;
 import com.blog.service.BlogService;
+import com.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class BlogController {
     @Autowired
     private BlogService blogService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/blog")
     public String blogPage(Model model) {
         model.addAttribute("blogs", blogService.getAllBlogs());
@@ -31,9 +35,13 @@ public class BlogController {
     }
 
     @PostMapping("/blog/create")
-    public String createBlog(@ModelAttribute Blog blog, @AuthenticationPrincipal User user) {
+    public String createBlog(@ModelAttribute Blog blog, @AuthenticationPrincipal org.springframework.security.core.userdetails.User auth_user) {
+        User user = userService.findByUsername(auth_user.getUsername());
+        if (user == null) {
+            throw new IllegalArgumentException("User must be logged in to create a blog");
+        }
         blogService.createBlog(blog, user);
-        return "redirect:/blog";
+        return "redirect:/backend/blog";
     }
 
     @GetMapping("/blog/view/{id}")
