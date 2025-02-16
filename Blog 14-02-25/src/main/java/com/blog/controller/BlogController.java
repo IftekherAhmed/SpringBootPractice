@@ -6,6 +6,7 @@ import com.blog.service.BlogService;
 import com.blog.service.UserService;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -35,7 +36,7 @@ public class BlogController {
     }
 
     @PostMapping("/blog/create")
-    public String createBlog(@ModelAttribute Blog blog, @AuthenticationPrincipal org.springframework.security.core.userdetails.User auth_user) {
+    public String createBlog(@ModelAttribute Blog blog, @AuthenticationPrincipal UserDetails auth_user) {
         User user = userService.findByUsername(auth_user.getUsername());
         if (user == null) {
             throw new IllegalArgumentException("User must be logged in to create a blog");
