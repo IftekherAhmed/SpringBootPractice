@@ -1,14 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/frontend/frontend.html}">
 <head>
     <title>Login</title>
 </head>
-<body>
-    <h2>Login</h2>
-    <form th:action="@{/login}" method="post">
-        <label>Username: <input type="text" name="username"/></label> <br>
-        <label>Password: <input type="password" name="password"/></label> <br>
-        <button type="submit">Login</button>
-    </form>
+<body>      
+    <section layout:fragment="content" class="container mt-5">
+        <h2>Login</h2>
+        <form th:action="@{/login}" method="post" class="form-group">
+            <div class="form-group">
+                <label>Username:</label>
+                <input type="text" name="username" class="form-control"/>
+            </div>
+            <div class="form-group mb-3">
+                <label>Password:</label>
+                <input type="password" name="password" class="form-control"/>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </section>
 </body>
 </html>

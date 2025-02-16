@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/backend/backend.html}">
 <head>
     <title>Dashboard</title>
 </head>
-<body>
-    <h2>Welcome, <span th:text="${username}"></span></h2>
-    <a href="/backend/blog/create">Create Blog Post</a> <br>
-    <a href="/backend/blog">Blog Post</a>  <br>
-    <a href="/logout">Logout</a> <br>
+<body>      
+    <section layout:fragment="content">
+        <h2>Welcome, <span th:text="${username}"></span></h2>
+    </section>
 </body>
 </html>

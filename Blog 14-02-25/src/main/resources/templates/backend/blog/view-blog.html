@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/backend/backend.html}">
 <head>
     <title>View Blog</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <h1 th:text="${blog.title}"></h1>
-    <p th:text="${blog.content}"></p>
-    <small>Posted by <span th:text="${blog.user.username}"></span> on <span th:text="${blog.createdAt}"></span></small>
-    <br>
-    <a th:href="@{/backend/blog/edit/{id}(id=${blog.id})}">Edit</a>
-    <a th:href="@{/backend/blog/delete/{id}(id=${blog.id})}">Delete</a>
-    <a th:href="@{/backend/blog}">Back to Blog List</a>
+    <section layout:fragment="content" class="container mt-5">
+        <h1 class="display-4" th:text="${blog.title}"></h1>
+        <p class="lead" th:text="${blog.content}"></p>
+        <small class="text-muted">Posted by <span th:text="${blog.user.username}"></span> on <span th:text="${blog.createdAt}"></span></small>
+        <br>
+        <a class="btn btn-primary mt-3" th:href="@{/backend/blog/edit/{id}(id=${blog.id})}">Edit</a>
+        <a class="btn btn-danger mt-3" th:href="@{/backend/blog/delete/{id}(id=${blog.id})}">Delete</a>
+        <a class="btn btn-secondary mt-3" th:href="@{/backend/blog}">Back to Blog List</a>
+    </section>
 </body>
 </html>

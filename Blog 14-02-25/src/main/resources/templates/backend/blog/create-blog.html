@@ -1,14 +1,24 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/backend/backend.html}">
 <head>
     <title>Create Blog</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Create a New Blog Post</h1>
-    <form th:action="@{/blog/create}" th:object="${blog}" method="post">
-        <label>Title: <input type="text" th:field="*{title}" required/></label> <br>
-        <label>Content: <textarea th:field="*{content}" required></textarea></label> <br>
-        <button type="submit">Create</button>
-    </form>
+    <section layout:fragment="content" class="container mt-5">
+        <h1>Create a New Blog Post</h1>
+        <form th:action="@{/blog/create}" th:object="${blog}" method="post">
+            <div class="form-group">
+                <label>Title:</label>
+                <input type="text" class="form-control" th:field="*{title}" required/>
+            </div>
+            <div class="form-group">
+                <label>Content:</label>
+                <textarea class="form-control" th:field="*{content}" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </section>
 </body>
 </html>

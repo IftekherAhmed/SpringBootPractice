@@ -1,13 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/frontend/frontend.html}">
 <head>
-    <meta charset="UTF-8">
     <title>Blog</title>
+    <meta charset="UTF-8">
 </head>
-<body>
-    <h1>Blog List</h1>
-    <ul>
-        <li th:each="blog : ${blogs}" th:text="${blog.title}"></li>
-    </ul>
+<body>      
+    <section layout:fragment="content">
+        <h1>Blog List</h1>
+        <div th:if="${blogs != null and !blogs.isEmpty()}">
+            <ul>
+            <li th:each="blog : ${blogs}" th:text="${blog.title}"></li>
+            </ul>
+        </div>
+        <div th:unless="${blogs != null and !blogs.isEmpty()}">
+            <p>No blogs available.</p>
+        </div>
+    </section>
 </body>
 </html>

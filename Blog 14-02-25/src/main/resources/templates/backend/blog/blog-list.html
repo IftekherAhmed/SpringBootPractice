@@ -1,32 +1,36 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/backend/backend.html}">
 <head>
     <title>Blog List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Blog Posts</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Created At</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="blog : ${blogs}">
-                <td th:text="${blog.title}"></td>
-                <td th:text="${blog.user.username}"></td>
-                <td th:text="${blog.createdAt}"></td>
-                <td>
-                    <a th:href="@{/backend/blog/view/{id}(id=${blog.id})}">View</a>
-                    <a th:href="@{/backend/blog/edit/{id}(id=${blog.id})}">Edit</a>
-                    <a th:href="@{/backend/blog/delete/{id}(id=${blog.id})}">Delete</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <a th:href="@{/backend/blog/create}">Create New Post</a>
+    <section layout:fragment="content" class="container mt-5">
+        <h1>Blog Posts</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="blog : ${blogs}">
+                    <td th:text="${blog.title}"></td>
+                    <td th:text="${blog.user.username}"></td>
+                    <td th:text="${blog.createdAt}"></td>
+                    <td>
+                        <a class="btn btn-info btn-sm" th:href="@{/backend/blog/view/{id}(id=${blog.id})}">View</a>
+                        <a class="btn btn-warning btn-sm" th:href="@{/backend/blog/edit/{id}(id=${blog.id})}">Edit</a>
+                        <a class="btn btn-danger btn-sm" th:href="@{/backend/blog/delete/{id}(id=${blog.id})}">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-success" th:href="@{/backend/blog/create}">Create New Post</a>
+    </section>
 </body>
 </html>
