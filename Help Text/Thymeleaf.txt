@@ -1,6 +1,5 @@
 Thymeleaf is a Java-based templating engine used for server-side rendering (SSR) in web applications. It's often used with Spring Boot to render HTML templates dynamically based on data from the backend. It’s designed to process HTML, XML, JavaScript, CSS, and even plain text.
 
-
 Thymeleaf Core Features:
 ---------------------------------
 # Natural Templating: Thymeleaf templates are just normal HTML files with added tags. They can still be opened in a browser without processing, allowing you to see the unprocessed HTML.
@@ -9,20 +8,16 @@ Thymeleaf Core Features:
 # Iteration and Conditional Statements: Thymeleaf allows you to loop through collections and apply conditional logic in your templates.
 # Fragment Inclusion: It supports fragments, which are reusable components like header, footer, sidebar, etc.
 
-
-
-Thymeleaf Syntax Overview
+Thymeleaf Syntax Overview:
 ---------------------------------
-#Variables and Expressions: Use ${} for variable expressions to evaluate variables.
+# Variables and Expressions: Use ${} for variable expressions to evaluate variables.
 Example: Display a message passed from the controller.
-
 <p>Hello, ${user.name}!</p>
 
 ===========================================
 
 # Conditional Statements: Use th:if and th:unless for conditional logic.
 Example: Display a message only if the user.name is present.
-
 <p th:if="${user.name}">Hello, ${user.name}!</p>
 <p th:unless="${user.name}">Hello, Guest!</p>
 
@@ -30,7 +25,6 @@ Example: Display a message only if the user.name is present.
 
 # Iteration: Use th:each to iterate over collections (like lists or sets).
 Example: Loop through a list of posts.
-
 <ul>
     <li th:each="post : ${posts}">
         <p th:text="${post.title}"></p>
@@ -41,23 +35,18 @@ Example: Loop through a list of posts.
 
 # Fragments: Reusable HTML components (like headers, footers, etc.).
 Example: Defining a reusable fragment.
-
-<!-- fragment.html -->
+<!-fragment.html -->
 <div th:fragment="header">
     <h1>Welcome to My Site</h1>
 </div>
 
-
-
 * Using the fragment in another file:
-
 <div th:replace="~{fragment :: header}"></div>
 
 ===========================================
 
 # Form Handling: Bind form fields to Java objects and automatically bind data to the server.
 Example: Create a form to submit a new post.
-
 <form action="#" th:action="@{/posts}" th:object="${post}" method="post">
     <label for="title">Title</label>
     <input type="text" id="title" th:field="*{title}">
@@ -69,7 +58,6 @@ Example: Create a form to submit a new post.
 ===========================================
 
 # Layout and Templating (Layout Dialect): layout.html
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,28 +69,24 @@ Example: Create a form to submit a new post.
     <header>
         <h1>Welcome to My Website</h1>
     </header>
-
     <nav>
         <ul>
             <li><a href="/home">Home</a></li>
             <li><a href="/about">About</a></li>
         </ul>
     </nav>
-
     <main>
-        <!-- This will be replaced with the content of each page -->
+        <!-This will be replaced with the content of each page -->
         <div th:replace="${body}"></div>
     </main>
-
     <footer>
         <p>Footer content</p>
     </footer>
 </body>
 </html>
 
-
 * Define a Content Template (e.g., home.html):
-<!-- home.html -->
+<!-home.html -->
 <html xmlns:th="http://www.thymeleaf.org">
     <body th:replace="layout :: body">
         <div th:text="'Welcome, ' + ${user.name}"></div>
@@ -111,27 +95,23 @@ Example: Create a form to submit a new post.
 
 ===========================================
 
-Thymeleaf with Spring Boot Example
+Thymeleaf with Spring Boot Example:
+---------------------------------
 Controller Example:
 Let's set up a basic PostController to show posts using Thymeleaf.
-
 @Controller
 @RequestMapping("/posts")
 public class PostController {
-
     private final PostService postService;
-
     public PostController(PostService postService) {
         this.postService = postService;
     }
-
     @GetMapping
     public String listPosts(Model model) {
         List<Post> posts = postService.findAll();
         model.addAttribute("posts", posts);
         return "post/list";  // Rendering post/list.html
     }
-
     @GetMapping("/{id}")
     public String showPost(@PathVariable Long id, Model model) {
         Post post = postService.findById(id).orElseThrow();
@@ -140,9 +120,8 @@ public class PostController {
     }
 }
 
-
 * Post List View (post/list.html):
-<!-- post/list.html -->
+<!-post/list.html -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Posts List</title>
@@ -157,9 +136,8 @@ public class PostController {
 </body>
 </html>
 
-
 * Post Detail View (post/show.html):
-<!-- post/show.html -->
+<!-post/show.html -->
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Post Details</title>
@@ -172,11 +150,9 @@ public class PostController {
 
 ===========================================
 
-Thymeleaf Expression Examples
-Form Binding:
-
-Use th:field to bind form fields to Java model attributes.
-
+Thymeleaf Expression Examples:
+---------------------------------
+# Form Binding: Use th:field to bind form fields to Java model attributes.
 <form th:action="@{/posts}" th:object="${post}" method="post">
     <label for="title">Title</label>
     <input type="text" id="title" th:field="*{title}" />
@@ -185,9 +161,458 @@ Use th:field to bind form fields to Java model attributes.
 
 ===========================================
 
-Dynamic Link Generation:
-Use @{} for URL expressions.
-
+# Dynamic Link Generation: Use @{} for URL expressions.
 <a th:href="@{/posts/{id}(id=${post.id})}">View Post</a>
+
+===========================================
+
+# th:text: Sets the text content of an HTML element.
+<p th:text="${message}">Default message</p>
+
+# th:utext: Sets the text content of an HTML element without escaping HTML.
+<p th:utext="${htmlContent}">Default HTML content</p>
+
+# th:value: Sets the value of an input field.
+<input type="text" th:value="${user.name}" />
+
+# th:each: Iterates over a collection.
+<ul>
+    <li th:each="user : ${users}" th:text="${user.name}">User Name</li>
+</ul>
+
+# th:if: Renders the element if the condition is true.
+<div th:if="${user.isAdmin}">Admin Dashboard</div>
+
+# th:unless: Renders the element if the condition is false.
+<div th:unless="${user.isAdmin}">User Dashboard</div>
+
+# th:switch and th:case: Works like a switch-case statement.
+<div th:switch="${user.role}">
+    <p th:case="'ADMIN'">Admin User</p>
+    <p th:case="'EDITOR'">Editor User</p>
+    <p th:case="">Regular User</p>
+</div>
+
+# th:object: Binds a form to a model object.
+<form th:object="${user}" th:action="@{/save}" method="post">
+    <input type="text" th:field="{name}" />
+    <input type="text" th:field="{email}" />
+    <button type="submit">Save</button>
+</form>
+
+# th:field: Binds an input field to a property of a model object.
+<input type="text" th:field="{name}" />
+
+# th:attr: Dynamically sets any HTML attribute.
+<img th:attr="src=@{/images/logo.png}, alt=${logoAlt}" />
+
+# th:class: Dynamically sets the CSS class of an element.
+<div th:class="${isActive} ? 'active' : 'inactive'">Content</div>
+
+# th:style: Dynamically sets the inline CSS of an element.
+<div th:style="'color:' + ${textColor}">Styled Text</div>
+
+# th:href: Dynamically sets the href attribute of a link.
+<a th:href="@{/user/{id}(id=${user.id})}">View Profile</a>
+
+# th:src: Dynamically sets the src attribute of an image or script.
+<img th:src="@{/images/logo.png}" />
+
+# th:action: Dynamically sets the action attribute of a form.
+<form th:action="@{/save}" method="post">
+    <button type="submit">Save</button>
+</form>
+
+# th:inline: Enables inline expressions in text, JavaScript, or CSS.
+<script th:inline="javascript">
+    var userId = [[${user.id}]];
+</script>
+
+===========================================
+
+Advanced Thymeleaf Attributes:
+---------------------------------
+# th:replace: Replaces the current element with a fragment.
+<div th:replace="fragments/header :: header"></div>
+
+# th:insert: Inserts a fragment into the current element.
+<div th:insert="fragments/header :: header"></div>
+
+# th:include: Includes the content of a fragment into the current element.
+<div th:include="fragments/header :: header"></div>
+
+# th:remove: Removes an element or fragment based on a condition.
+<div th:remove="${isProduction} ? all : none">Debug Info</div>
+
+# th:block: A placeholder element that doesn't render in the final HTML.
+<th:block th:each="user : ${users}">
+    <p th:text="${user.name}">User Name</p>
+</th:block>
+
+# th:with: Defines local variables within a scope.
+<div th:with="name=${user.name}">
+    <p th:text="${name}">User Name</p>
+</div>
+
+# th:assert: Validates expressions during template execution.
+<div th:assert="${user != null}">User is not null</div>
+
+===========================================
+
+Thymeleaf Utility Objects:
+---------------------------------
+# dates: Formats and manipulates dates.
+<p th:text="${dates.format(user.createdAt, 'dd/MM/yyyy')}">Date</p>
+
+# strings: Manipulates strings.
+<p th:text="${strings.toUpperCase(user.name)}">Name</p>
+
+# numbers: Formats and manipulates numbers.
+<p th:text="${numbers.formatDecimal(price, 2, 2)}">Price</p>
+
+# lists: Manipulates lists.
+<p th:text="${lists.size(users)}">User Count</p>
+
+# arrays: Manipulates arrays.
+<p th:text="${arrays.length(userArray)}">Array Length</p>
+
+# sets: Manipulates sets.
+<p th:text="${sets.size(userSet)}">Set Size</p>
+
+# maps: Manipulates maps.
+<p th:text="${maps.size(userMap)}">Map Size</p>
+
+# temporals: Works with Java 8+ date/time APIs.
+<p th:text="${temporals.format(user.createdAt, 'dd/MM/yyyy')}">Date</p>
+
+===========================================
+
+Thymeleaf Fragments:
+---------------------------------
+Fragments allow you to reuse parts of your templates.
+
+# Defining a Fragment:
+<div th:fragment="header">
+    <h1>Welcome to My Website</h1>
+</div>
+
+# Using a Fragment:
+<div th:replace="fragments/header :: header"></div>
+
+===========================================
+
+Thymeleaf Layouts:
+---------------------------------
+Thymeleaf supports layout inheritance using the th:replace and th:insert attributes.
+
+# Base Layout (layout.html):
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:fragment="title">Default Title</title>
+</head>
+<body>
+    <header th:replace="fragments/header :: header"></header>
+    <main th:fragment="content">
+        <p>Default Content</p>
+    </main>
+    <footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
+
+# Extending the Layout:
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout">
+<head>
+    <title th:replace="layout :: title">Custom Title</title>
+</head>
+<body>
+    <main th:replace="layout :: content">
+        <p>Custom Content</p>
+    </main>
+</body>
+</html>
+
+===========================================
+
+Thymeleaf with Spring Security:
+---------------------------------
+Thymeleaf integrates with Spring Security to provide additional attributes for role and permission checks.
+
+# Spring Security Dialect Attributes:
+sec:authorize="hasRole('ADMIN')": Checks if the user has a specific role.
+sec:authorize="hasAuthority('edit-post')": Checks if the user has a specific permission.
+
+<div sec:authorize="hasRole('ADMIN')">
+    <p>Welcome, Admin!</p>
+</div>
+<div sec:authorize="hasAuthority('edit-post')">
+    <p>You can edit posts.</p>
+</div>
+
+===========================================
+
+Best Practices:
+---------------------------------
+1. Use Fragments: Reuse common parts of your templates.
+2. Avoid Complex Logic in Templates: Move logic to the backend or utility classes.
+3. Use Layouts: Create a consistent structure for your pages.
+4. Leverage Utility Objects: Use Thymeleaf's built-in utilities for common tasks.
+
+===========================================
+
+Examples:
+---------------------------------
+# Thymeleaf Alert Component with Bootstrap 5:
+The component receives a message and an alert type (e.g., success, danger). If no message is present, it remains hidden.
+
+# Thymeleaf & Alpine.js Modal Component:
+Displays post details in a modal. Clicking on a title opens the modal.
+
+===========================================
+
+Thymeleaf Alert Component (alert.html):
+<!-alert.html (Thymeleaf Component) -->
+<div th:fragment="alert(message, type)" th:if="${message}" class="alert" th:classappend="'alert-' + ${type}" role="alert">
+    <span th:text="${message}"></span>
+</div>
+
+# Usage in Another Template:
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <!-Example: Showing an error message -->
+    <div th:replace="components/alert :: alert(${errorMessage}, 'danger')"></div>
+    <!-Example: Showing a success message -->
+    <div th:replace="components/alert :: alert(${successMessage}, 'success')"></div>
+</body>
+</html>
+
+# How to Pass Data from Controller (Spring Boot):
+@Controller
+public class DemoController {
+    @GetMapping("/show")
+    public String showPage(Model model) {
+        model.addAttribute("errorMessage", "Something went wrong!");
+        model.addAttribute("successMessage", "Operation successful!");
+        return "index"; // Your Thymeleaf template
+    }
+}
+
+===========================================
+
+Alpine.js Modal Component for Posts:
+---------------------------------
+# Modal Component (modal.html):
+<!-modal.html (Thymeleaf + Alpine.js Component) -->
+<div th:fragment="modal" x-data="{ showModal: false, post: {} }">
+    <!-Modal Trigger -->
+    <button class="btn btn-primary" x-on:click="showModal = true">Open Modal</button>
+    <!-Modal -->
+    <div class="modal fade show" x-show="showModal" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" x-text="post.title"></h5>
+                    <button type="button" class="btn-close" x-on:click="showModal = false"></button>
+                </div>
+                <div class="modal-body">
+                    <p x-text="post.content"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" x-on:click="showModal = false">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+# Usage in Another Template:
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.10.5/dist/cdn.min.js" defer></script>
+</head>
+<body>
+    <div x-data="{ selectedPost: {} }">
+        <ul>
+            <li th:each="post : ${posts}">
+                <a href="" x-on:click="selectedPost = { title: '[[${post.title}]]', content: '[[${post.content}]]' }; showModal = true" th:text="${post.title}"></a>
+            </li>
+        </ul>
+        <div th:replace="components/modal :: modal"></div>
+    </div>
+</body>
+</html>
+
+# How to Pass Data from Controller (Spring Boot):
+@Controller
+public class PostController {
+    @GetMapping("/posts")
+    public String showPosts(Model model) {
+        List<Map<String, String>> posts = List.of(
+            Map.of("title", "Post 1", "content", "This is the first post."),
+            Map.of("title", "Post 2", "content", "This is the second post.")
+        );
+        model.addAttribute("posts", posts);
+        return "posts"; // Your Thymeleaf template
+    }
+}
+
+# How It Works:
+1. The alert component only appears if a message exists.
+2. The modal opens when a title is clicked and dynamically displays post details using Alpine.js.
+3. The x-on:click event sets the selectedPost data and opens the modal.
+
+===========================================
+
+Thymeleaf Internationalization:
+---------------------------------
+Thymeleaf supports internationalization (i18n) to create multilingual applications.
+
+# Message Properties:
+Define messages in properties files (e.g., messages.properties, messages_fr.properties).
+
+messages.properties:
+greeting=Hello, {0}!
+
+messages_fr.properties:
+greeting=Bonjour, {0}!
+
+# Using Messages in Templates:
+Use th:text to display messages.
+<p th:text="#{greeting(${user.name})}">Hello, User!</p>
+
+# Configuring Message Source in Spring Boot:
+Configure the message source in application.properties.
+spring.messages.basename=messages
+
+===========================================
+
+Thymeleaf Error Handling:
+---------------------------------
+Thymeleaf can handle form validation errors and display error messages.
+
+# Binding Result:
+Use BindingResult to capture validation errors in the controller.
+
+@Controller
+public class UserController {
+    @PostMapping("/saveUser")
+    public String saveUser(@Valid @ModelAttribute User user, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            return "userForm";
+        }
+        // Save user
+        return "redirect:/users";
+    }
+}
+
+# Displaying Errors in Templates:
+Use th:errors to display validation errors.
+
+<form th:action="@{/saveUser}" th:object="${user}" method="post">
+    <label for="name">Name</label>
+    <input type="text" id="name" th:field="*{name}">
+    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+    <button type="submit">Save</button>
+</form>
+
+===========================================
+
+Thymeleaf Custom Dialects:
+---------------------------------
+Thymeleaf allows you to create custom dialects to extend its functionality.
+
+# Creating a Custom Dialect:
+Extend AbstractDialect and implement the necessary methods.
+
+public class MyDialect extends AbstractDialect {
+    public MyDialect() {
+        super("MyDialect");
+    }
+    @Override
+    public Set<IProcessor> getProcessors(String dialectPrefix) {
+        return Set.of(new MyProcessor(dialectPrefix));
+    }
+}
+
+# Using the Custom Dialect:
+Register the custom dialect in the Thymeleaf configuration.
+
+@Configuration
+public class ThymeleafConfig {
+    @Bean
+    public SpringTemplateEngine templateEngine() {
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.addDialect(new MyDialect());
+        return templateEngine;
+    }
+}
+
+===========================================
+
+Thymeleaf with WebSockets:
+---------------------------------
+Thymeleaf can be used with WebSockets to create real-time applications.
+
+# WebSocket Configuration:
+Configure WebSocket in Spring Boot.
+
+@Configuration
+@EnableWebSocketMessageBroker
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws").withSockJS();
+    }
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        registry.enableSimpleBroker("/topic");
+        registry.setApplicationDestinationPrefixes("/app");
+    }
+}
+
+# WebSocket Controller:
+Create a controller to handle WebSocket messages.
+
+@Controller
+public class ChatController {
+    @MessageMapping("/chat")
+    @SendTo("/topic/messages")
+    public Message send(Message message) {
+        return message;
+    }
+}
+
+# WebSocket Client:
+Create a WebSocket client in the Thymeleaf template.
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+    <div id="messages"></div>
+    <script>
+        var socket = new SockJS('/ws');
+        var stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            stompClient.subscribe('/topic/messages', function (message) {
+                var messageBody = JSON.parse(message.body);
+                document.getElementById('messages').innerHTML += '<p>' + messageBody.content + '</p>';
+            });
+        });
+    </script>
+</body>
+</html>
+
+===========================================
 
 
