@@ -9,8 +9,12 @@
     <section layout:fragment="content" class="container mt-5">
         <h1 class="display-4" th:text="${blog.title}"></h1>
         <p class="lead" th:text="${blog.content}"></p>
-            <small class="text-muted">Posted by <span th:text="${blog.user.username}"></span> on <span th:text="${blog.createdAt}"></span></small>
+        <small class="text-muted">Posted by <span th:text="${blog.user.username}"></span> on <span th:text="${blog.createdAt}"></span></small>
         <br>
+        <h5>Categories:</h5>
+        <ul>
+            <li th:each="category : ${blog.categories}" th:text="${category.name}"></li>
+        </ul>
         <a class="btn btn-primary mt-3" th:href="@{/backend/blog/edit/{id}(id=${blog.id})}">Edit</a>
         <a class="btn btn-danger mt-3" th:href="@{/backend/blog/delete/{id}(id=${blog.id})}">Delete</a>
         <a class="btn btn-secondary mt-3" th:href="@{/backend/blog}">Back to Blog List</a>

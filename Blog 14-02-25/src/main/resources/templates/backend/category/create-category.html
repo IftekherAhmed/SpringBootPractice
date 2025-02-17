@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/backend/backend.html}">
+<head>
+    <title>Create Category</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <section layout:fragment="content" class="container mt-5">
+        <h1>Create a New Category</h1>
+        <form th:action="@{/backend/category/create}" th:object="${category}" method="post">
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" class="form-control" th:field="*{name}" required/>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </section>
+</body>
+</html>

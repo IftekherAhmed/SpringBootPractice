@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/backend/backend.html}">
+<head>
+    <title>Category List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <section layout:fragment="content" class="container mt-5">
+        <h1>Categories</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="category : ${categories}">
+                    <td th:text="${category.name}"></td>
+                    <td>
+                        <a class="btn btn-warning btn-sm" th:href="@{/backend/category/edit/{id}(id=${category.id})}">Edit</a>
+                        <a class="btn btn-danger btn-sm" th:href="@{/backend/category/delete/{id}(id=${category.id})}">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <a class="btn btn-success" th:href="@{/backend/category/create}">Create New Category</a>
+    </section>
+</body>
+</html>

@@ -9,9 +9,23 @@
     <section layout:fragment="content">
         <h1>Blog List</h1>
         <div th:if="${blogs != null and !blogs.isEmpty()}">
-            <ul>
-            <li th:each="blog : ${blogs}" th:text="${blog.title}"></li>
-            </ul>
+            <div class="row" th:each="blog, iterStat : ${blogs}">
+                <div class="card col-md-4 mb-4">
+                    <div class="card-body">
+                        <h2 class="card-title">
+                            <a th:href="@{|/blog/${blog.id}|}" th:text="${blog.title}"></a>
+                        </h2>
+                        <p class="card-text">Total Comments: <span th:text="${blog.comments.size()}"></span></p>
+                    </div>
+                </div>
+            </div>
+            <nav aria-label="Page navigation" th:if="${totalPages != null and totalPages > 1}">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:each="page : ${#numbers.sequence(1, totalPages)}">
+                        <a class="page-link" th:href="@{|/blogs?page=${page}|}" th:text="${page}" th:classappend="${page == currentPage} ? 'active' : ''"></a>
+                    </li>
+                </ul>
+            </nav>
         </div>
         <div th:unless="${blogs != null and !blogs.isEmpty()}">
             <p>No blogs available.</p>
