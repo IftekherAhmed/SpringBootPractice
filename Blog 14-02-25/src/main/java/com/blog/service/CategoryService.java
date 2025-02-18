@@ -35,6 +35,9 @@ public class CategoryService {
     }
 
     public void deleteCategory(Long id) {
+        if (id == 1) {
+            throw new IllegalArgumentException("Category with ID 1 cannot be deleted.");
+        }
         categoryRepository.deleteById(id);
     }
 }

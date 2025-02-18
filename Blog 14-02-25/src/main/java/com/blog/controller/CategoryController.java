@@ -26,9 +26,10 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
-    public String createCategory(@ModelAttribute Category category) {
+    public String createCategory(@ModelAttribute Category category, Model model) {
         categoryService.createCategory(category);
-        return "redirect:/backend/category";
+        model.addAttribute("success", "Category created successfully.");
+        return "redirect:/backend/category?success=Category created successfully.";
     }
 
     @GetMapping("/edit/{id}")
@@ -38,14 +39,20 @@ public class CategoryController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateCategory(@PathVariable Long id, @ModelAttribute Category category) {
+    public String updateCategory(@PathVariable Long id, @ModelAttribute Category category, Model model) {
         categoryService.updateCategory(id, category);
-        return "redirect:/backend/category";
+        model.addAttribute("success", "Category updated successfully.");
+        return "redirect:/backend/category?success=Category updated successfully.";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteCategory(@PathVariable Long id) {
-        categoryService.deleteCategory(id);
+    public String deleteCategory(@PathVariable Long id, Model model) {
+        try {
+            categoryService.deleteCategory(id);
+            model.addAttribute("success", "Category deleted successfully.");
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+        }
         return "redirect:/backend/category";
     }
 }

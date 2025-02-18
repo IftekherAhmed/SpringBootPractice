@@ -45,13 +45,15 @@ public class BlogController {
     }
 
     @PostMapping("/blog/create")
-    public String createBlog(@ModelAttribute Blog blog, @RequestParam Set<Long> categoryIds, @AuthenticationPrincipal UserDetails auth_user) {
+    public String createBlog(@ModelAttribute Blog blog, @RequestParam Set<Long> categoryIds, @AuthenticationPrincipal UserDetails auth_user, Model model) {
         User user = userService.findByUsername(auth_user.getUsername());
         if (user == null) {
-            throw new IllegalArgumentException("User must be logged in to create a blog");
+            model.addAttribute("error", "User must be logged in to create a blog");
+            return "backend/blog/create-blog";
         }
         blogService.createBlog(blog, user, categoryIds);
-        return "redirect:/backend/blog";
+        model.addAttribute("success", "Blog created successfully.");
+        return "redirect:/backend/blog?success=Blog created successfully.";
     }
 
     @GetMapping("/blog/view/{id}")
@@ -68,14 +70,16 @@ public class BlogController {
     }
 
     @PostMapping("/blog/update/{id}")
-    public String updateBlog(@PathVariable Long id, @ModelAttribute Blog blog, @RequestParam Set<Long> categoryIds) {
+    public String updateBlog(@PathVariable Long id, @ModelAttribute Blog blog, @RequestParam Set<Long> categoryIds, Model model) {
         blogService.updateBlog(id, blog, categoryIds);
-        return "redirect:/backend/blog";
+        model.addAttribute("success", "Blog updated successfully.");
+        return "redirect:/backend/blog?success=Blog updated successfully.";
     }
 
     @GetMapping("/blog/delete/{id}")
-    public String deleteBlog(@PathVariable Long id) {
+    public String deleteBlog(@PathVariable Long id, Model model) {
         blogService.deleteBlog(id);
-        return "redirect:/backend/blog";
+        model.addAttribute("success", "Blog deleted successfully.");
+        return "redirect:/backend/blog?success=Blog deleted successfully.";
     }
 }

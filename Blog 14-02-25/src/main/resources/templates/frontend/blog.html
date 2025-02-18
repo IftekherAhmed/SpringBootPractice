@@ -12,9 +12,9 @@
             <div class="row" th:each="blog, iterStat : ${blogs}">
                 <div class="card col-md-4 mb-4">
                     <div class="card-body">
-                        <h2 class="card-title">
-                            <a th:href="@{|/blog/${blog.id}|}" th:text="${blog.title}"></a>
-                        </h2>
+                        <b class="card-title">
+                            <a class="text-decoration-none text-dark" th:href="@{|/blog/${blog.id}|}" th:text="${blog.title}"></a>
+                        </b>
                         <p class="card-text">Total Comments: <span th:text="${blog.comments.size()}"></span></p>
                     </div>
                 </div>
