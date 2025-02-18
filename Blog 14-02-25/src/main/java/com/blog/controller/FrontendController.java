@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.blog.entity.Comment;
 import com.blog.service.BlogService;
+import com.blog.service.CommentService;
 import com.blog.entity.Blog;
 
 import java.util.Optional;
@@ -18,6 +19,9 @@ import java.util.Optional;
 public class FrontendController {
     @Autowired
     private BlogService blogService;
+
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping("/")
     public String home() {
@@ -45,13 +49,13 @@ public class FrontendController {
         Comment comment = new Comment();
         comment.setName(name);
         comment.setContent(content);
-        blogService.addComment(id, comment);
+        commentService.addComment(id, comment);
         return "redirect:/blog/{id}";
     }
 
     @PostMapping(value = "/blog/{blogId}/comment/{commentId}/delete", params = "_method=delete")
     public String deleteComment(@PathVariable Long blogId, @PathVariable Long commentId) {
-        blogService.deleteComment(blogId, commentId);
+        commentService.deleteComment(blogId, commentId);
         return "redirect:/blog/{blogId}";
     }
 }
