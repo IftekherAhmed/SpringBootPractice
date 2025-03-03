@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<!-- Parent project configuration -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.4.3</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<!--/ Parent project configuration -->
+	
+	<!-- Project coordinates -->
+	<groupId>com.barcode</groupId>
+	<artifactId>Barcode-Print</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Barcode-Print</name>
+	<description>Barcode Printer</description>
+	<url/>
+	<!--/ Project coordinates -->
+	
+	<!-- Licensing information -->
+	<licenses>
+		<license/>
+	</licenses>
+	<!--/ Licensing information -->
+	
+	<!-- Developer information -->
+	<developers>
+		<developer/>
+	</developers>
+	<!--/ Developer information -->
+	
+	<!-- Source control management -->
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+	<!--/ Source control management -->
+	
+	<!-- Project properties -->
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<!--/ Project properties -->
+	
+	<!-- Project dependencies -->
+	<dependencies>
+		<!-- Spring boot jpa -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<!--/ Spring boot jpa -->
+		
+		<!-- Spring boot security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<!--/ Spring boot security -->
+		
+		<!-- Spring boot thymeleaf -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<!--/ Spring boot thymeleaf -->
+		
+		<!-- Thymeleaf layout dialect -->
+		<dependency>
+			<groupId>nz.net.ultraq.thymeleaf</groupId>
+			<artifactId>thymeleaf-layout-dialect</artifactId>
+		</dependency>
+		<!--/ Thymeleaf layout dialect -->
+		
+		<!-- Spring boot web -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!--/ Spring boot web -->
+		
+		<!-- HTMX Spring Boot Thymeleaf -->
+		<dependency>
+			<groupId>io.github.wimdeblauwe</groupId>
+			<artifactId>htmx-spring-boot-thymeleaf</artifactId>
+			<version>4.0.1</version>
+		</dependency>
+		<!--/ HTMX Spring Boot Thymeleaf -->
+		
+		<!-- Thymeleaf extras Spring Security -->
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
+		</dependency>
+		<!--/ Thymeleaf extras Spring Security -->
+
+		<!-- Spring boot devtools -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
+		</dependency>
+		<!--/ Spring boot devtools -->
+		
+		<!-- MySQL connector -->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!--/ MySQL connector -->
+		
+		<!-- Lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!--/ Lombok -->
+		
+		<!-- Spring boot starter test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!--/ Spring boot starter test -->
+		
+		<!-- Spring security test -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!--/ Spring security test -->
+	</dependencies>
+	<!--/ Project dependencies -->
+
+	<!-- Build configuration -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+			<!--/ maven-compiler-plugin -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<!--/ spring-boot-maven-plugin -->
+		</plugins>
+	</build>
+	<!--/ Build configuration -->
+
+</project>
