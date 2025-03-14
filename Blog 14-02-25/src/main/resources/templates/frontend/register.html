@@ -8,19 +8,30 @@
     <section layout:fragment="content" class="container mt-5">
         <h2>Register</h2>
         <form th:action="@{/register}" th:object="${user}" method="post" class="form-group">
+            <!-- Username field -->
             <div class="form-group">
                 <label>Username:</label>
                 <input type="text" th:field="*{username}" class="form-control" required/>
             </div>
+            <!-- /Username field -->
+
+            <!-- Password field -->
             <div class="form-group mb-3">
                 <label>Password:</label>
                 <input th:field="*{password}" class="form-control" required/>
             </div>
+            <!-- /Password field -->
+
+            <!-- Re-enter Password field -->
             <div class="form-group mb-3">
                 <label>Re-enter Password:</label>
                 <input th:field="*{rePassword}" class="form-control" required/>
             </div>
+            <!-- /Re-enter Password field -->
+
+            <!-- Button to register -->
             <button type="submit" class="btn btn-primary">Register</button>
+            <!-- /Button to register -->
         </form>
     </section>
 </body>

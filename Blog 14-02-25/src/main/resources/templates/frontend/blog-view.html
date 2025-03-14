@@ -10,6 +10,8 @@
     <section layout:fragment="content" class="container mt-5">
         <h1 th:text="${blog.title}" class="mb-4"></h1>
         <p th:text="${blog.content}" class="mb-4"></p>
+        
+        <!-- Comment form -->
         <form th:action="@{/blog/{id}/comment(id=${blog.id})}" method="post" class="mb-4">
             <div class="form-group">
                 <input type="text" name="name" placeholder="Your name" required class="form-control mb-2">
@@ -19,6 +21,9 @@
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+        <!-- /Comment form -->
+
+        <!-- Comment list -->
         <ul class="list-group">
             <li class="list-group-item" th:each="comment : ${blog.comments}">
                 <p class="mb-0">
@@ -34,6 +39,7 @@
                 </form>
             </li>
         </ul>
+        <!-- /Comment list -->
     </section>
 </body>
 </html>

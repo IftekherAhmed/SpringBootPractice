@@ -25,6 +25,7 @@ public class Comment {
         createdAt = new Date();
     }
 
+    // Blog 
     @ManyToOne
     @JoinColumn(name = "blog_id", nullable = false)
     private Blog blog;

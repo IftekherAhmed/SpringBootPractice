@@ -8,13 +8,19 @@
 <body>
     <section layout:fragment="content" class="container mt-5">
         <h1>Create a New Category</h1>
+        <!-- Form to create a new category -->
         <form th:action="@{/backend/category/create}" th:object="${category}" method="post">
             <div class="form-group">
                 <label>Name:</label>
                 <input type="text" class="form-control" th:field="*{name}" required/>
             </div>
+            <!-- /Form to create a new category -->
+
+            <!-- Button to create category -->
             <button type="submit" class="btn btn-primary">Create</button>
+            <!-- /Button to create category -->
         </form>
     </section>
+    <!-- /section -->
 </body>
 </html>

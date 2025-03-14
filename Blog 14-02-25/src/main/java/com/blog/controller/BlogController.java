@@ -31,12 +31,14 @@ public class BlogController {
     @Autowired
     private CategoryRepository categoryRepository; // Inject CategoryRepository
 
+    // Blog List
     @GetMapping("/blog")
     public String blogPage(Model model) {
         model.addAttribute("blogs", blogService.getAllBlogs()); // Add all blogs to the model
         return "backend/blog/blog-list"; // Return blog list page
     }
 
+    // Blog Creation View
     @GetMapping("/blog/create")
     public String createBlogPage(Model model) {
         model.addAttribute("blog", new Blog()); // Add new blog to the model
@@ -44,6 +46,7 @@ public class BlogController {
         return "backend/blog/create-blog"; // Return create blog page
     }
 
+    // Blog Creation
     @PostMapping("/blog/create")
     public String createBlog(@ModelAttribute Blog blog, @RequestParam Set<Long> categoryIds, @AuthenticationPrincipal UserDetails auth_user, Model model) {
         User user = userService.findByUsername(auth_user.getUsername()); // Find user by username
@@ -56,12 +59,14 @@ public class BlogController {
         return "redirect:/backend/blog?success=Blog created successfully."; // Redirect to blog list page with success message
     }
 
+    // Single Blog View
     @GetMapping("/blog/view/{id}")
     public String viewBlog(@PathVariable Long id, Model model) {
         model.addAttribute("blog", blogService.getBlogById(id).orElse(new Blog())); // Add blog to the model
         return "backend/blog/view-blog"; // Return view blog page
     }
 
+    // Blog Edit View
     @GetMapping("/blog/edit/{id}")
     public String editBlogPage(@PathVariable Long id, Model model) {
         model.addAttribute("blog", blogService.getBlogById(id).orElse(new Blog())); // Add blog to the model
@@ -69,6 +74,7 @@ public class BlogController {
         return "backend/blog/edit-blog"; // Return edit blog page
     }
 
+    // Blog Update
     @PostMapping("/blog/update/{id}")
     public String updateBlog(@PathVariable Long id, @ModelAttribute Blog blog, @RequestParam Set<Long> categoryIds, Model model) {
         blogService.updateBlog(id, blog, categoryIds); // Update blog
@@ -76,6 +82,7 @@ public class BlogController {
         return "redirect:/backend/blog?success=Blog updated successfully."; // Redirect to blog list page with success message
     }
 
+    // Blog Delete
     @GetMapping("/blog/delete/{id}")
     public String deleteBlog(@PathVariable Long id, Model model) {
         blogService.deleteBlog(id); // Delete blog

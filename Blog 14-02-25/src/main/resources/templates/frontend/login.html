@@ -8,15 +8,23 @@
     <section layout:fragment="content" class="container mt-5">
         <h2>Login</h2>
         <form th:action="@{/login}" method="post" class="form-group">
+            <!-- Username field -->
             <div class="form-group">
                 <label>Username:</label>
                 <input type="text" name="username" class="form-control"/>
             </div>
+            <!-- /Username field -->
+
+            <!-- Password field -->
             <div class="form-group mb-3">
                 <label>Password:</label>
                 <input type="password" name="password" class="form-control"/>
             </div>
+            <!-- /Password field -->
+
+            <!-- Button to login -->
             <button type="submit" class="btn btn-primary">Login</button>
+            <!-- /Button to login -->
         </form>
     </section>
 </body>

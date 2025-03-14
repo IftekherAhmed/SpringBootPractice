@@ -21,6 +21,11 @@ public class User {
     @Transient
     private String rePassword;
 
+    // Blog
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Blog> blogs;
+
+    // Role
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "user_roles",

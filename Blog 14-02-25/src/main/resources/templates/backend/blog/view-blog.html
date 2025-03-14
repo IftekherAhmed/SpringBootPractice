@@ -7,17 +7,33 @@
 </head>
 <body>
     <section layout:fragment="content" class="container mt-5">
+        <!-- Display blog title -->
         <h1 class="display-4" th:text="${blog.title}"></h1>
+        <!-- /Display blog title -->
+
+        <!-- Display blog content -->
         <p class="lead" th:text="${blog.content}"></p>
+        <!-- /Display blog content -->
+
+        <!-- Display blog author and creation date -->
         <small class="text-muted">Posted by <span th:text="${blog.user.username}"></span> on <span th:text="${blog.createdAt}"></span></small>
+        <!-- /Display blog author and creation date -->
+
         <br>
+
+        <!-- Display blog categories -->
         <h5>Categories:</h5>
         <ul>
             <li th:each="category : ${blog.categories}" th:text="${category.name}"></li>
         </ul>
+        <!-- /Display blog categories -->
+
+        <!-- Action buttons -->
         <a class="btn btn-primary mt-3" th:href="@{/backend/blog/edit/{id}(id=${blog.id})}">Edit</a>
         <a class="btn btn-danger mt-3" th:href="@{/backend/blog/delete/{id}(id=${blog.id})}">Delete</a>
         <a class="btn btn-secondary mt-3" th:href="@{/backend/blog}">Back to Blog List</a>
+        <!-- /Action buttons -->
     </section>
+    <!-- /section -->
 </body>
 </html>

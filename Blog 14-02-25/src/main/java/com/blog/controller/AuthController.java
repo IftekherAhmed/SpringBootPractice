@@ -25,6 +25,7 @@ public class AuthController {
     @Autowired
     private RoleRepository roleRepository;
 
+    // Login View
     @GetMapping("/login")
     public String loginPage(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
@@ -34,12 +35,14 @@ public class AuthController {
         return "frontend/login";
     }
 
+    // Register View
     @GetMapping("/register")
     public String registerPage(Model model) {
         model.addAttribute("user", new User());
         return "frontend/register";
     }
 
+    // Register User
     @PostMapping("/register")
     public String registerUser(@ModelAttribute User user, Model model) {
         if (!user.getPassword().equals(user.getRePassword())) {
@@ -56,6 +59,7 @@ public class AuthController {
         return "redirect:/login?success";
     }
 
+    // Logout
     @GetMapping("/logout")
     public String logoutPage(HttpServletRequest request) {
         HttpSession session = request.getSession(false);

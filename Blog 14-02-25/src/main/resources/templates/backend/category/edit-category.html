@@ -8,13 +8,19 @@
 <body>
     <section layout:fragment="content" class="container mt-5">
         <h1>Edit Category</h1>
+        <!-- Form to edit category -->
         <form th:action="@{/backend/category/update/{id}(id=${category.id})}" th:object="${category}" method="post">
             <div class="form-group">
                 <label>Name:</label>
                 <input type="text" class="form-control" th:field="*{name}" required/>
             </div>
+            <!-- /Form to edit category -->
+
+            <!-- Button to update category -->
             <button type="submit" class="btn btn-primary">Update</button>
+            <!-- /Button to update category -->
         </form>
     </section>
+    <!-- /section -->
 </body>
 </html>

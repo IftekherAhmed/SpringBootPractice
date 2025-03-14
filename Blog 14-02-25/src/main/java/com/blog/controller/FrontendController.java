@@ -23,17 +23,20 @@ public class FrontendController {
     @Autowired
     private CommentService commentService; // Inject CommentService
 
+    // Home Page
     @GetMapping("/")
     public String home() {
         return "frontend/home"; // Return home page
     }
 
+    // Blog Page
     @GetMapping("/blog")
     public String blogPage(Model model) {
         model.addAttribute("blogs", blogService.getAllBlogs()); // Add all blogs to the model
         return "frontend/blog"; // Return blog page
     }
 
+    // Single Blog View
     @GetMapping("/blog/{id}")
     public String viewBlog(@PathVariable Long id, Model model) {
         Optional<Blog> blog = blogService.getBlogById(id); // Get blog by ID
@@ -44,6 +47,7 @@ public class FrontendController {
         return "redirect:/blog"; // Redirect to blog page if blog not found
     }
 
+    // Add Comment
     @PostMapping("/blog/{id}/comment")
     public String addComment(@PathVariable Long id, @RequestParam String name, @RequestParam String content) {
         Comment comment = new Comment(); // Create new comment
@@ -53,6 +57,7 @@ public class FrontendController {
         return "redirect:/blog/{id}"; // Redirect to the blog view page
     }
 
+    // Delete Comment
     @PostMapping(value = "/blog/{blogId}/comment/{commentId}/delete", params = "_method=delete")
     public String deleteComment(@PathVariable Long blogId, @PathVariable Long commentId) {
         commentService.deleteComment(blogId, commentId); // Delete comment by ID

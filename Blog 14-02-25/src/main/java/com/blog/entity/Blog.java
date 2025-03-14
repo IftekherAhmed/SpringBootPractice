@@ -24,6 +24,7 @@ public class Blog {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    // Category
     @ManyToMany
     @JoinTable(
         name = "blog_category",
@@ -32,6 +33,7 @@ public class Blog {
     )
     private Set<Category> categories;
 
+    // Comment
     @OneToMany(mappedBy = "blog", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 

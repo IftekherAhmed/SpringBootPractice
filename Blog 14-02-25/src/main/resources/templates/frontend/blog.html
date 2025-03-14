@@ -8,6 +8,7 @@
 <body>      
     <section layout:fragment="content">
         <h1>Blog List</h1>
+        <!-- Blog list -->
         <div th:if="${blogs != null and !blogs.isEmpty()}">
             <div class="row" th:each="blog, iterStat : ${blogs}">
                 <div class="card col-md-4 mb-4">
@@ -19,6 +20,9 @@
                     </div>
                 </div>
             </div>
+            <!-- /Blog list -->
+
+            <!-- Pagination -->
             <nav aria-label="Page navigation" th:if="${totalPages != null and totalPages > 1}">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:each="page : ${#numbers.sequence(1, totalPages)}">
@@ -26,7 +30,10 @@
                     </li>
                 </ul>
             </nav>
+            <!-- /Pagination -->
         </div>
+        <!-- /Blog list -->
+
         <div th:unless="${blogs != null and !blogs.isEmpty()}">
             <p>No blogs available.</p>
         </div>

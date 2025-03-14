@@ -17,6 +17,7 @@ public class Category {
 
     private String name;
 
+    // Blog
     @ManyToMany(mappedBy = "categories")
     private Set<Blog> blogs;
 }
