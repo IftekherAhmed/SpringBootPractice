@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DashboardController {
     @GetMapping("/dashboard")
     public String dashboard(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("username", user.getUsername());
-        return "backend/dashboard";
+        model.addAttribute("username", user.getUsername()); // Add username to the model
+        return "backend/dashboard"; // Return dashboard page
     }
 }

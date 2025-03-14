@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 public class DateUtils {
 
+    // Method to format the given LocalDateTime to a human-readable "time ago" format
     public static String formatTimeAgo(LocalDateTime dateTime) {
         LocalDateTime now = LocalDateTime.now();
         Duration duration = Duration.between(dateTime, now);

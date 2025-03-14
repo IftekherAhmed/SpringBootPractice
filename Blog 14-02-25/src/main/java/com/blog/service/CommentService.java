@@ -20,6 +20,7 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
 
+    // Method to add a comment to a blog
     public Comment addComment(Long blogId, Comment comment) {
         Optional<Blog> blog = blogRepository.findById(blogId);
         if (blog.isPresent()) {
@@ -30,6 +31,7 @@ public class CommentService {
         return null;
     }
 
+    // Method to delete a comment from a blog
     public void deleteComment(Long blogId, Long commentId) {
         Optional<Blog> blog = blogRepository.findById(blogId);
         if (blog.isPresent()) {

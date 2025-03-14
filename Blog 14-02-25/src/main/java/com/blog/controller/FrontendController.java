@@ -18,44 +18,44 @@ import java.util.Optional;
 @Controller
 public class FrontendController {
     @Autowired
-    private BlogService blogService;
+    private BlogService blogService; // Inject BlogService
 
     @Autowired
-    private CommentService commentService;
+    private CommentService commentService; // Inject CommentService
 
     @GetMapping("/")
     public String home() {
-        return "frontend/home";
+        return "frontend/home"; // Return home page
     }
 
     @GetMapping("/blog")
     public String blogPage(Model model) {
-        model.addAttribute("blogs", blogService.getAllBlogs());
-        return "frontend/blog";
+        model.addAttribute("blogs", blogService.getAllBlogs()); // Add all blogs to the model
+        return "frontend/blog"; // Return blog page
     }
 
     @GetMapping("/blog/{id}")
     public String viewBlog(@PathVariable Long id, Model model) {
-        Optional<Blog> blog = blogService.getBlogById(id);
+        Optional<Blog> blog = blogService.getBlogById(id); // Get blog by ID
         if (blog.isPresent()) {
-            model.addAttribute("blog", blog.get());
-            return "frontend/blog-view";
+            model.addAttribute("blog", blog.get()); // Add blog to the model if present
+            return "frontend/blog-view"; // Return blog view page
         }
-        return "redirect:/blog";
+        return "redirect:/blog"; // Redirect to blog page if blog not found
     }
 
     @PostMapping("/blog/{id}/comment")
     public String addComment(@PathVariable Long id, @RequestParam String name, @RequestParam String content) {
-        Comment comment = new Comment();
-        comment.setName(name);
-        comment.setContent(content);
-        commentService.addComment(id, comment);
-        return "redirect:/blog/{id}";
+        Comment comment = new Comment(); // Create new comment
+        comment.setName(name); // Set comment name
+        comment.setContent(content); // Set comment content
+        commentService.addComment(id, comment); // Add comment to the blog
+        return "redirect:/blog/{id}"; // Redirect to the blog view page
     }
 
     @PostMapping(value = "/blog/{blogId}/comment/{commentId}/delete", params = "_method=delete")
     public String deleteComment(@PathVariable Long blogId, @PathVariable Long commentId) {
-        commentService.deleteComment(blogId, commentId);
-        return "redirect:/blog/{blogId}";
+        commentService.deleteComment(blogId, commentId); // Delete comment by ID
+        return "redirect:/blog/{blogId}"; // Redirect to the blog view page
     }
 }

@@ -9,13 +9,15 @@ import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 @SpringBootApplication
 public class BlogApplication {
 
+    // Main method to run the Spring Boot application
 	public static void main(String[] args) {
 		SpringApplication.run(BlogApplication.class, args);
 	}
 
+    // Bean definition for LayoutDialect
 	@Bean
 	public LayoutDialect layoutDialect() {
-	return new LayoutDialect();
+		return new LayoutDialect();
 	}
 
 }

@@ -11,48 +11,48 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/backend/category")
 public class CategoryController {
-    private final CategoryService categoryService;
+    private final CategoryService categoryService; // Inject CategoryService
 
     @GetMapping
     public String categoryPage(Model model) {
-        model.addAttribute("categories", categoryService.getAllCategories());
-        return "backend/category/category-list";
+        model.addAttribute("categories", categoryService.getAllCategories()); // Add all categories to the model
+        return "backend/category/category-list"; // Return category list page
     }
 
     @GetMapping("/create")
     public String createCategoryPage(Model model) {
-        model.addAttribute("category", new Category());
-        return "backend/category/create-category";
+        model.addAttribute("category", new Category()); // Add new category to the model
+        return "backend/category/create-category"; // Return create category page
     }
 
     @PostMapping("/create")
     public String createCategory(@ModelAttribute Category category, Model model) {
-        categoryService.createCategory(category);
-        model.addAttribute("success", "Category created successfully.");
-        return "redirect:/backend/category?success=Category created successfully.";
+        categoryService.createCategory(category); // Create new category
+        model.addAttribute("success", "Category created successfully."); // Add success message to the model
+        return "redirect:/backend/category?success=Category created successfully."; // Redirect to category list page with success message
     }
 
     @GetMapping("/edit/{id}")
     public String editCategoryPage(@PathVariable Long id, Model model) {
-        model.addAttribute("category", categoryService.getCategoryById(id).orElse(new Category()));
-        return "backend/category/edit-category";
+        model.addAttribute("category", categoryService.getCategoryById(id).orElse(new Category())); // Add category to the model
+        return "backend/category/edit-category"; // Return edit category page
     }
 
     @PostMapping("/update/{id}")
     public String updateCategory(@PathVariable Long id, @ModelAttribute Category category, Model model) {
-        categoryService.updateCategory(id, category);
-        model.addAttribute("success", "Category updated successfully.");
-        return "redirect:/backend/category?success=Category updated successfully.";
+        categoryService.updateCategory(id, category); // Update category
+        model.addAttribute("success", "Category updated successfully."); // Add success message to the model
+        return "redirect:/backend/category?success=Category updated successfully."; // Redirect to category list page with success message
     }
 
     @GetMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Long id, Model model) {
         try {
-            categoryService.deleteCategory(id);
-            model.addAttribute("success", "Category deleted successfully.");
+            categoryService.deleteCategory(id); // Delete category
+            model.addAttribute("success", "Category deleted successfully."); // Add success message to the model
         } catch (IllegalArgumentException e) {
-            model.addAttribute("error", e.getMessage());
+            model.addAttribute("error", e.getMessage()); // Add error message to the model
         }
-        return "redirect:/backend/category";
+        return "redirect:/backend/category"; // Redirect to category list page
     }
 }

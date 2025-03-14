@@ -25,10 +25,12 @@ public class BlogService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    // Method to get all blogs ordered by creation date
     public List<Blog> getAllBlogs() {
         return blogRepository.findAllByOrderByCreatedAtDesc();
     }
 
+    // Method to create a new blog
     public Blog createBlog(Blog blog, User user, Set<Long> categoryIds) {
         blog.setUser(user);
         blog.setCreatedAt(LocalDateTime.now());
@@ -37,10 +39,12 @@ public class BlogService {
         return blogRepository.save(blog);
     }
 
+    // Method to get a blog by its ID
     public Optional<Blog> getBlogById(Long id) {
         return blogRepository.findById(id);
     }
 
+    // Method to update an existing blog
     public void updateBlog(Long id, Blog blog, Set<Long> categoryIds) {
         Optional<Blog> existingBlog = blogRepository.findById(id);
         if (existingBlog.isPresent()) {
@@ -53,6 +57,7 @@ public class BlogService {
         }
     }
 
+    // Method to delete a blog by its ID
     public void deleteBlog(Long id) {
         blogRepository.deleteById(id);
     }

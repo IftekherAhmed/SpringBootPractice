@@ -15,24 +15,28 @@ import com.blog.service.UserDetailsServiceImpl;
 @RequiredArgsConstructor
 public class SecurityConfig {
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsService; // Inject UserDetailsServiceImpl
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .userDetailsService(userDetailsService)
+            .userDetailsService(userDetailsService) // Set user details service
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/backend/**").authenticated()
-                .anyRequest().permitAll()
+                .requestMatchers("/backend/**").authenticated() // Require authentication for backend URLs
+                .anyRequest().permitAll() // Allow all other requests
             )
-            .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/backend/dashboard", true))
-            .logout(logout -> logout.logoutSuccessUrl("/"));
+            .formLogin(form -> form
+                .loginPage("/login")
+                .defaultSuccessUrl("/backend/dashboard", true) // Configure login page and default success URL
+                .failureUrl("/login?error=Invalid username or password") // Configure failure URL with error parameter
+            )
+            .logout(logout -> logout.logoutSuccessUrl("/")); // Configure logout success URL
 
-        return http.build();
+        return http.build(); // Build the security filter chain
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(); // Return BCryptPasswordEncoder
     }
 }
