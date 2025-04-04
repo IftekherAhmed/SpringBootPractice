@@ -1,12 +1,11 @@
 package com.product_crud.service;
 
-import com.product_crud.entity.Comment;
-
+import com.product_crud.payload.CommentDto;
 import java.util.List;
 
 public interface CommentService {
-    Comment addCommentToProduct(Long productId, Comment comment);
-    List<Comment> getCommentsByProduct(Long productId);
+    CommentDto addCommentToProduct(Long productId, CommentDto commentDto);
+    List<CommentDto> getCommentsByProduct(Long productId);
     void deleteComment(Long id);
 }
 

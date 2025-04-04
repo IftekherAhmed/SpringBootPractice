@@ -1,33 +1,35 @@
 package com.product_crud.controller;
 
-import com.product_crud.entity.Comment;
+import com.product_crud.payload.CommentDto;
 import com.product_crud.service.CommentService;
+
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/comments")
+@RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;
 
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
-
     @PostMapping("/{productId}")
-    public Comment addComment(@PathVariable Long productId, @RequestBody Comment comment) {
-        return commentService.addCommentToProduct(productId, comment);
+    public ResponseEntity<CommentDto> addComment(@PathVariable Long productId, @RequestBody CommentDto commentDto) {
+        return ResponseEntity.ok(commentService.addCommentToProduct(productId, commentDto));
     }
 
     @GetMapping("/{productId}")
-    public List<Comment> getCommentsByProduct(@PathVariable Long productId) {
-        return commentService.getCommentsByProduct(productId);
+    public ResponseEntity<List<CommentDto>> getCommentsByProduct(@PathVariable Long productId) {
+        return ResponseEntity.ok(commentService.getCommentsByProduct(productId));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteComment(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
         commentService.deleteComment(id);
+        return ResponseEntity.noContent().build();
     }
 }
 
