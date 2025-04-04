@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product APIs</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+    <div class="container my-5">
+        <h1 class="text-center mb-4 display-4 fw-bold text-primary">
+            <i class="bi bi-gear-fill"></i> API Documentation
+        </h1>
+
+        <section class="mb-5">
+            <h2 class="text-success mb-3 fw-semibold">
+                <i class="bi bi-box-seam"></i> Product APIs
+            </h2>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">HTTP Method</th>
+                        <th scope="col">Endpoint</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Request Body</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>POST</td>
+                        <td>/api/products</td>
+                        <td>Create a new product (must have at least 1 category)</td>
+                        <td>{ "name": "Laptop", "description": "Gaming Laptop", "price": 1500.0, "categories": [1, 2] }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/api/products</td>
+                        <td>Get all products</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/api/products/{id}</td>
+                        <td>Get a product by ID</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/api/products/{id}</td>
+                        <td>Update a product</td>
+                        <td>{ "name": "Updated Laptop", "price": 1200.0, "categories": [1] }</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/api/products/{id}</td>
+                        <td>Delete a product</td>
+                        <td>None</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="text-success mb-3 fw-semibold">
+                <i class="bi bi-tags-fill"></i> Category APIs
+            </h2>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">HTTP Method</th>
+                        <th scope="col">Endpoint</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Request Body</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>POST</td>
+                        <td>/api/categories</td>
+                        <td>Create a new category</td>
+                        <td>{ "name": "Electronics" }</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/api/categories</td>
+                        <td>Get all categories</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/api/categories/{id}</td>
+                        <td>Get a category by ID</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/api/categories/{id}</td>
+                        <td>Delete a category</td>
+                        <td>None</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="text-success mb-3 fw-semibold">
+                <i class="bi bi-chat-dots-fill"></i> Comment APIs
+            </h2>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">HTTP Method</th>
+                        <th scope="col">Endpoint</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Request Body</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>POST</td>
+                        <td>/api/comments/{productId}</td>
+                        <td>Add a comment to a product</td>
+                        <td>{ "content": "Great product!" }</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/api/comments/{productId}</td>
+                        <td>Get all comments for a product</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/api/comments/{id}</td>
+                        <td>Delete a comment</td>
+                        <td>None</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <hr>
+
+        <section class="mb-5">
+            <h2 class="text-success mb-3 fw-semibold">
+                <i class="bi bi-collection-fill"></i> Sample Data for Categories
+            </h2>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Electronics</td>
+                    </tr>
+                    <tr>
+                        <td>Home Appliances</td>
+                    </tr>
+                    <tr>
+                        <td>Gaming</td>
+                    </tr>
+                    <tr>
+                        <td>Fashion</td>
+                    </tr>
+                    <tr>
+                        <td>Sports</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="text-success mb-3 fw-semibold">
+                <i class="bi bi-box2-fill"></i> Sample Data for Products
+            </h2>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Categories</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Laptop</td>
+                        <td>Gaming Laptop</td>
+                        <td>1500.0</td>
+                        <td>[1, 3]</td>
+                    </tr>
+                    <tr>
+                        <td>Smartphone</td>
+                        <td>Latest 5G Phone</td>
+                        <td>1200.0</td>
+                        <td>[1]</td>
+                    </tr>
+                    <tr>
+                        <td>Washing Machine</td>
+                        <td>Front Load Automatic</td>
+                        <td>800.0</td>
+                        <td>[2]</td>
+                    </tr>
+                    <tr>
+                        <td>Running Shoes</td>
+                        <td>Lightweight Shoes</td>
+                        <td>100.0</td>
+                        <td>[5]</td>
+                    </tr>
+                    <tr>
+                        <td>Smartwatch</td>
+                        <td>Waterproof Smartwatch</td>
+                        <td>200.0</td>
+                        <td>[1, 5]</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="text-success mb-3 fw-semibold">
+                <i class="bi bi-chat-left-text-fill"></i> Sample Data for Comments
+            </h2>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Product ID</th>
+                        <th scope="col">Content</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>This laptop is amazing!</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Best performance ever!</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Battery life is outstanding!</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>Would recommend to any gamer!</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Love the camera quality!</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Fast charging is really useful.</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Best smartphone I have used!</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Sleek design, very stylish!</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Saves water and energy!</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Very quiet operation!</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Cleans clothes really well!</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>A must-have for big families!</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Very comfortable to wear!</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Lightweight and durable!</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Best shoes for running!</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Good grip, prevents slipping.</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Best smartwatch ever!</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Tracks steps accurately!</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Very stylish and waterproof!</td>
+                    </tr>
+                    <tr>
+                        <td>5</td>
+                        <td>Battery lasts all day!</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+
+</html>
