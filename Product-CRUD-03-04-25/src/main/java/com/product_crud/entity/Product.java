@@ -1,13 +1,10 @@
 package com.product_crud.entity;
 
-import java.util.HashSet;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import java.util.List;
-import java.util.Set;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -17,18 +14,17 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Product name is required")
+    @Column(nullable = false)
     private String name;
 
-    @Min(value = 1, message = "Price must be greater than 0")
+    @Column(nullable = false)
     private double price;
 
-    @NotBlank(message = "Description cannot be blank")
+    @Column(nullable = false)
     private String description;
 
     @ManyToMany
@@ -37,9 +33,10 @@ public class Product {
         joinColumns = @JoinColumn(name = "product_id"),
         inverseJoinColumns = @JoinColumn(name = "category_id")
     )
-    @NotEmpty(message = "Product must have at least one category")
-    private Set<Category> categories = new HashSet<>();
+    @Builder.Default
+    private List<Category> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
+    @Builder.Default
+    private List<Comment> comments = new ArrayList<>();
 }

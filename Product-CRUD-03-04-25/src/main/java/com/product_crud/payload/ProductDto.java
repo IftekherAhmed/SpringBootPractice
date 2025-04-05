@@ -1,8 +1,9 @@
 package com.product_crud.payload;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,9 +16,12 @@ public class ProductDto {
     @NotBlank(message = "Product name is required")
     private String name;
 
-    @Min(value = 1, message = "Price must be greater than 0")
+    @Positive(message = "Price must be greater than 0")
     private double price;
 
     @NotBlank(message = "Description is required")
     private String description;
+
+    @NotEmpty(message = "At least one category is required")
+    private List<Long> categoryIds;
 }

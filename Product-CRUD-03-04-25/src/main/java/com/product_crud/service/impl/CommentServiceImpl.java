@@ -6,19 +6,18 @@ import com.product_crud.payload.CommentDto;
 import com.product_crud.repository.CommentRepository;
 import com.product_crud.repository.ProductRepository;
 import com.product_crud.service.CommentService;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final ProductRepository productRepository;
-
-    public CommentServiceImpl(CommentRepository commentRepository, ProductRepository productRepository) {
-        this.commentRepository = commentRepository;
-        this.productRepository = productRepository;
-    }
 
     @Override
     public CommentDto addCommentToProduct(Long productId, CommentDto commentDto) {
@@ -35,7 +34,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentDto> getCommentsByProduct(Long productId) {
-        return commentRepository.findAll().stream()
+        return commentRepository.findAll()
+                .stream()
                 .filter(comment -> comment.getProduct().getId().equals(productId))
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
