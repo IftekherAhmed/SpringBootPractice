@@ -24,4 +24,6 @@ public class ProductDto {
 
     @NotEmpty(message = "At least one category is required")
     private List<Long> categoryIds;
+
+    private List<CommentDto> comments;
 }

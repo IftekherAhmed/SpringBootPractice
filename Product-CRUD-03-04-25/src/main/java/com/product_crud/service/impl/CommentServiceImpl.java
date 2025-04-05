@@ -34,16 +34,27 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentDto> getCommentsByProduct(Long productId) {
-        return commentRepository.findAll()
+        List<CommentDto> comments = commentRepository.findAll()
                 .stream()
                 .filter(comment -> comment.getProduct().getId().equals(productId))
                 .map(this::mapToDto)
-                .collect(Collectors.toList());
+                        .collect(Collectors.toList());
+        
+                if (comments.isEmpty()) {
+                    throw new RuntimeException("No comments found for product with id: " + productId);
+                }
+        
+                return comments;
     }
 
     @Override
     public void deleteComment(Long id) {
-        commentRepository.deleteById(id);
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found with id: " + id));
+        if (comment.getProduct() != null) {
+            comment.getProduct().getComments().remove(comment);
+        }
+        commentRepository.delete(comment);
     }
 
     private CommentDto mapToDto(Comment comment) {
