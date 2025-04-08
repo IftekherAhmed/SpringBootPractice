@@ -17,6 +17,11 @@ import java.util.List;
 public class CategoryController {
     private final CategoryService categoryService;
 
+    @GetMapping
+    public ResponseEntity<List<CategoryDto>> getAllCategories() {
+        return ResponseEntity.ok(categoryService.getAllCategories());
+    }
+
     @PostMapping
     public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryDto categoryDto) {
         return ResponseEntity.ok(categoryService.createCategory(categoryDto));
@@ -25,11 +30,6 @@ public class CategoryController {
     @GetMapping("/{id}")
     public ResponseEntity<CategoryDto> getProduct(@PathVariable Long id) {
         return ResponseEntity.ok(categoryService.getCategoryById(id));
-    }
-
-    @GetMapping
-    public ResponseEntity<List<CategoryDto>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
     @PutMapping("/{id}")

@@ -17,55 +17,7 @@
             <i class="bi bi-gear-fill"></i> API Documentation
         </h1>
 
-        <section class="mb-5">
-            <h2 class="text-success mb-3 fw-semibold">
-                <i class="bi bi-box-seam"></i> Product APIs
-            </h2>
-            <table class="table table-bordered table-striped">
-                <thead class="table-dark">
-                    <tr>
-                        <th scope="col">HTTP Method</th>
-                        <th scope="col">Endpoint</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Request Body</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>POST</td>
-                        <td>/api/products</td>
-                        <td>Create a new product (must have at least 1 category)</td>
-                        <td>{ "name": "Laptop", "description": "Gaming Laptop", "price": 1500.0, "categories": [1, 2] }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>GET</td>
-                        <td>/api/products</td>
-                        <td>Get all products</td>
-                        <td>None</td>
-                    </tr>
-                    <tr>
-                        <td>GET</td>
-                        <td>/api/products/{id}</td>
-                        <td>Get a product by ID</td>
-                        <td>None</td>
-                    </tr>
-                    <tr>
-                        <td>PUT</td>
-                        <td>/api/products/{id}</td>
-                        <td>Update a product</td>
-                        <td>{ "name": "Updated Laptop", "price": 1200.0, "categories": [1] }</td>
-                    </tr>
-                    <tr>
-                        <td>DELETE</td>
-                        <td>/api/products/{id}</td>
-                        <td>Delete a product</td>
-                        <td>None</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
+        <!-- Category APIs Section -->
         <section class="mb-5">
             <h2 class="text-success mb-3 fw-semibold">
                 <i class="bi bi-tags-fill"></i> Category APIs
@@ -107,7 +59,60 @@
                 </tbody>
             </table>
         </section>
+        <!--/ Category APIs Section -->
 
+        <!-- Product APIs Section -->
+        <section class="mb-5">
+            <h2 class="text-success mb-3 fw-semibold">
+                <i class="bi bi-box-seam"></i> Product APIs
+            </h2>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">HTTP Method</th>
+                        <th scope="col">Endpoint</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Request Body</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>POST</td>
+                        <td>/api/products</td>
+                        <td>Create a new product (must have at least 1 category)</td>
+                        <td>{ "name": "Laptop", "description": "Gaming Laptop", "price": 1500.0, "categoryIds": [1, 2] }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/api/products</td>
+                        <td>Get all products</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td>GET</td>
+                        <td>/api/products/{id}</td>
+                        <td>Get a product by ID</td>
+                        <td>None</td>
+                    </tr>
+                    <tr>
+                        <td>PUT</td>
+                        <td>/api/products/{id}</td>
+                        <td>Update a product</td>
+                        <td>{ "name": "Updated Laptop", "price": 1200.0, "categoryIds": [1] }</td>
+                    </tr>
+                    <tr>
+                        <td>DELETE</td>
+                        <td>/api/products/{id}</td>
+                        <td>Delete a product</td>
+                        <td>None</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <!--/ Product APIs Section -->
+
+        <!-- Comment APIs Section -->
         <section class="mb-5">
             <h2 class="text-success mb-3 fw-semibold">
                 <i class="bi bi-chat-dots-fill"></i> Comment APIs
@@ -143,9 +148,11 @@
                 </tbody>
             </table>
         </section>
+        <!--/ Comment APIs Section -->
 
         <hr>
 
+        <!-- Sample Data for Categories Section -->
         <section class="mb-5">
             <h2 class="text-success mb-3 fw-semibold">
                 <i class="bi bi-collection-fill"></i> Sample Data for Categories
@@ -175,7 +182,9 @@
                 </tbody>
             </table>
         </section>
+        <!--/ Sample Data for Categories Section -->
 
+        <!-- Sample Data for Products Section -->
         <section class="mb-5">
             <h2 class="text-success mb-3 fw-semibold">
                 <i class="bi bi-box2-fill"></i> Sample Data for Products
@@ -223,7 +232,9 @@
                 </tbody>
             </table>
         </section>
+        <!--/ Sample Data for Products Section -->
 
+        <!-- Sample Data for Comments Section -->
         <section class="mb-5">
             <h2 class="text-success mb-3 fw-semibold">
                 <i class="bi bi-chat-left-text-fill"></i> Sample Data for Comments
@@ -319,6 +330,7 @@
                 </tbody>
             </table>
         </section>
+        <!--/ Sample Data for Comments Section -->
     </div>
 </body>
 

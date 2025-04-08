@@ -17,6 +17,14 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
+    public List<CategoryDto> getAllCategories() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public CategoryDto createCategory(CategoryDto categoryDto) {
         Category category = Category.builder()
                 .name(categoryDto.getName())
@@ -31,14 +39,6 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         return mapToDto(category);
-    }
-
-    @Override
-    public List<CategoryDto> getAllCategories() {
-        return categoryRepository.findAll()
-                .stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
     }
 
     @Override
